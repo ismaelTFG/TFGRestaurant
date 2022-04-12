@@ -2,15 +2,20 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>inicio</title>
+    <title>add</title>
 </head>
 <body>
-    <h1>Inicio</h1>
-    <form action="#" th:action="@{/inicio}" method="post">
+    <h1>add</h1>
+    <form action="#" th:action="@{/addUser}" method="post">
         <p>Usuario</p>
         <input type="text" th:field="${user.user}">
         <p>Contraseña</p>
         <input type="password" th:field="${user.password}">
+        <p>administrador
+            <input type="radio" th:field="${user.admi}" th:value="true">
+            no administrador
+            <input type="radio" th:field="${user.admi}" th:value="false">
+        </p>
         <p><input type="submit"></p>
     </form>
 </body>
