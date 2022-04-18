@@ -1,5 +1,6 @@
 package com.eep.TFGRestaurant.serviceImpl;
 
+
 import com.eep.TFGRestaurant.entity.user.UserDto;
 import com.eep.TFGRestaurant.entity.user.UserEntity;
 import com.eep.TFGRestaurant.repository.FireBase;
@@ -31,18 +32,25 @@ public class UserServiceImpl implements UserService {
 
         List<UserEntity> list = new ArrayList<>();
         UserEntity userEntity;
-        ApiFuture<QuerySnapshot> querySnapshotApiFuture = fireBase.getFirestore().collection("user").get();
+
+        CollectionReference users = fireBase.getFirestore().collection("user");
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = users.get();
 
         try {
 
             for (DocumentSnapshot i: querySnapshotApiFuture.get().getDocuments()) {
+
                 userEntity = i.toObject(UserEntity.class);
-                userEntity.setId(i.getId());
+                userEntity.setUser(i.getId());
+
                 list.add(userEntity);
+
             }
 
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (InterruptedException | ExecutionException e) {
+
             e.printStackTrace();
+
         }
 
         return list;
@@ -54,12 +62,11 @@ public class UserServiceImpl implements UserService {
 
         Map<String, Object> docData = new HashMap<>();
 
-        docData.put("user", userEntity.getUser());
         docData.put("password", userEntity.getPassword());
         docData.put("admi", userEntity.isAdmi());
 
         CollectionReference users = fireBase.getFirestore().collection("user");
-        ApiFuture<WriteResult> writeResultApiFuture = users.document().create(docData);
+        ApiFuture<WriteResult> writeResultApiFuture = users.document(userEntity.getUser()).create(docData);
 
         try {
 
@@ -69,36 +76,7 @@ public class UserServiceImpl implements UserService {
 
             }
 
-        } catch (ExecutionException | InterruptedException e) {
-
-            e.printStackTrace();
-
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean update(String id, UserEntity userEntity) {
-
-        Map<String, Object> docData = new HashMap<>();
-
-        docData.put("user", userEntity.getUser());
-        docData.put("password", userEntity.getPassword());
-        docData.put("admi", userEntity.isAdmi());
-
-        CollectionReference users = fireBase.getFirestore().collection("user");
-        ApiFuture<WriteResult> writeResultApiFuture = users.document(id).set(docData);
-
-        try {
-
-            if (null != writeResultApiFuture.get()){
-
-                return true;
-
-            }
-
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (InterruptedException | ExecutionException e) {
 
             e.printStackTrace();
 
@@ -106,29 +84,6 @@ public class UserServiceImpl implements UserService {
 
         return false;
 
-    }
-
-    @Override
-    public boolean delete(String id) {
-
-        CollectionReference users = fireBase.getFirestore().collection("user");
-        ApiFuture<WriteResult> writeResultApiFuture = users.document(id).delete();
-
-        try {
-
-            if (null != writeResultApiFuture.get()){
-
-                return true;
-
-            }
-
-        } catch (ExecutionException | InterruptedException e) {
-
-            e.printStackTrace();
-
-        }
-
-        return false;
     }
 
     @Override
@@ -146,7 +101,9 @@ public class UserServiceImpl implements UserService {
         for (UserEntity i:list) {
             if (i.getUser().equals(userEntity.getUser())){
                 if (i.getPassword().equals(userEntity.getPassword())){
+
                     return true;
+
                 }
             }
         }
@@ -154,5 +111,4 @@ public class UserServiceImpl implements UserService {
         return false;
 
     }
-
 }

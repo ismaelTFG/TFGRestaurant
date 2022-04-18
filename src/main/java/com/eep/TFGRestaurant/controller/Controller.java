@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.concurrent.ExecutionException;
+
 @org.springframework.stereotype.Controller
 public class Controller {
 
@@ -68,7 +70,7 @@ public class Controller {
     }
 
     @GetMapping("/deleteUser")
-    public ModelAndView deleteUser(){
+    public ModelAndView deleteUser() throws ExecutionException, InterruptedException {
 
         ModelAndView mav = new ModelAndView(deleteuser);
 
