@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tfgrestaurant",
+  "private_key_id": "c35137ab630120cd266b888b05898289fa74daef",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDO21d4y1wG/810\nDghalN4SNSrFFnVEgStlRdI1Vwiols4FAboKQ+1nJa/A03HmLpYWwUcfBI41MHFa\ndzEFxv4ipoImv930bLPh364mgTgP5E9nwgZ/hYqj5gWczsNn4ssb4bcfS/Jfjeq4\nBgcll/TTCsOFLZfRzxZuSx2Zm8PvMfDa1jElzKfvmTn1gQEzNMH70kX3+Sfy1Uia\n3NstfxILHDB0wBVvqrr/z6PGNCE9Vn9mS8fHzqpbhY7dfUrrDY69t+zrwODVzqtj\nmtNPgA1ReLRGvt6QH0Cr+/AStyq9f6/moEanj8BbYUdrP3l/qlc1/nvVwNWeiorQ\nGzeFHmYhAgMBAAECggEACwd/mCLiVZk0Ci5pXEhjDX4k4/yjj13Xw37qi1+ISFI/\ndTLiCYQVAhKXVrpaG1d74dtiVbwMx7c9Lqv7mCmZCUiZg0QTAIz/NlmSfokV79BQ\n5OEKhFLJe/MFdOvtV/pWsWDik6+dTQz9vobLwMG5ExDthd9Sy061t8xs1/DfNz9O\nOYiZpNg+DzVSF0JrbDZqYhQUBeRMgXby0yyLinzhlyK/W0WXI57KvBENfGG+izDH\nHCB1Y9fKBqTYxiTbb2YRfLCeUfPUccEMoiyveDcLa1pQEun6zmF9PTITQrdKj+17\nVrqFQvhZST6WLf+PIUJCf7zwJSIunajj7naXA9CghQKBgQDoQwdwYl3iaFxavUzP\no/gIzxdunxtoqKXUg0ziukGyM8v0VR09hi7BzTD98DxO1Bk78jcgKsoX5KaR0CRg\npbHHaj0iXn3U4B7KbK7QG345xGE9KvSjN/tn6dEHqn901rXzgdqXXHA0bK8eWkX8\nLPCGljp0q6ufRhqsvAUckRrObwKBgQDj/5uHu7+ihm2w5nSdHCF/69wR7yBWUswE\nNnndzhPUU1hB7ypSlczgfpuBg9+5bwcgLD4n+EOca6vexXr89VHyDiRkCqZu92i8\n50s6yp6VeDUUmqaGb3Cgz06mgvEp7oBuNU8fvQAGgRTpBHEK+a9CNDXWBm3tBbZN\nPTJZZCFcbwKBgHoTcP+C1DHCBHi08oBYgG+w2XINMozJx49xC6JHn2wYiWR8sAe8\nVSsLvGpcMHaGSFUXtB22H857IYmWSuh5bn2Pu14rKBwRSF3AzgkXyjp2m11ZDIgV\nTpCJdpJ+7MruZ2f7onbX4SnMziY38Hzg6fLzVvonmOb4I+ESWeVv5xUFAoGBAJd+\nTb+gtrKtE9GJL079VB0FgRLBiwEQvtLFx6/jsDVSs8ALxFlfg+Re+8DQ+STjax6r\nhxlT0sjqmibJnPDbqHlngDKhCPmOlx99p/UGkNzMJKjuIVwOTA3t8VqegtPTz65q\n6YozMQMhXd1+wAYE5bjdrC/r0bq+IuWrlfrjl28tAoGAAhhqU6ZBEB4lDVY7D+v1\nDuE6mIgzdAdu8Zzz6/PDDKCnb8Ovfb21l+Kq0j+NSNB60WiGTbIujK6wkTNYwVoy\nKzjzflGV+sR9g2ALIXjY5tEKqlkiFe9E3Gk50sPT+IR7QSTDytHZP5rkdtf6MyTw\ncRQJgeEmb+lb2jPU/eG0YDo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-736v0@tfgrestaurant.iam.gserviceaccount.com",
+  "client_id": "108874590634150896179",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-736v0%40tfgrestaurant.iam.gserviceaccount.com"
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>delete</title>
+</head>
+<body>
+    <h1>delete</h1>
+    <form action="#" th:action="@{/deleteUser}" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <td>nombre</td>
+                    <td>selecion</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="i : ${lista}">
+                    <td>
+                        <span th:text="${i.user}"></span>
+                    </td>
+                    <td>
+                        <input type="radio" th:field="${nombre.user}" th:value="${i.user}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit">
+    </form>
+</body>
+</html>
