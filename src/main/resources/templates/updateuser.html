@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>update</title>
+</head>
+<body>
+    <h1>Modificar</h1>
+    <form action="#" th:action="@{/updateUser}" method="post">
+        <select th:field="*{user.user}">
+            <option th:each="i : ${lista}" th:value="${i.user}"><span th:text="${i.user}"></span></option>
+        </select>
+        <p>Contraseña</p>
+        <input type="password" th:field="${user.password}">
+        <p>administrador
+            <input type="radio" th:field="${user.admi}" th:value="true">
+            no administrador
+            <input type="radio" th:field="${user.admi}" th:value="false">
+        </p>
+        <p><input type="submit"></p>
+    </form>
+</body>
+</html>

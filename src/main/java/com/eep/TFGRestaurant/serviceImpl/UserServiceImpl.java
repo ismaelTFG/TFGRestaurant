@@ -87,6 +87,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean delete(String id) {
+
+        CollectionReference users = fireBase.getFirestore().collection("user");
+        ApiFuture<WriteResult> writeResultApiFuture = users.document(id).delete();
+
+        try {
+
+            if (null != writeResultApiFuture.get()){
+
+                return true;
+
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public boolean update(UserEntity userEntity) {
+
+        Map<String, Object> docData = new HashMap<>();
+
+        docData.put("password", userEntity.getPassword());
+        docData.put("admi", userEntity.isAdmi());
+
+        CollectionReference users = fireBase.getFirestore().collection("user");
+        ApiFuture<WriteResult> writeResultApiFuture = users.document(userEntity.getUser()).set(docData);
+
+        try {
+
+            if (null != writeResultApiFuture.get()){
+
+                return true;
+
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
+    @Override
     public UserEntity DtoToEntity(UserDto userDto) {
 
         return new UserEntity(userDto.getUser(), userDto.getPassword(), userDto.isAdmi());
@@ -111,4 +163,5 @@ public class UserServiceImpl implements UserService {
         return false;
 
     }
+
 }

@@ -1,6 +1,7 @@
 package com.eep.TFGRestaurant.controller;
 
 import com.eep.TFGRestaurant.entity.user.UserDto;
+import com.eep.TFGRestaurant.entity.user.UserEntity;
 import com.eep.TFGRestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +18,8 @@ public class Controller {
     private static final String index = "index";
     private static final String inicio = "inicio";
     private static final String addUser = "adduser";
-    private static final String deleteuser = "deleteuser";
+    private static final String deleteUser = "deleteuser";
+    private static final String updateUser = "updateuser";
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -72,9 +74,9 @@ public class Controller {
     @GetMapping("/deleteUser")
     public ModelAndView deleteUser() throws ExecutionException, InterruptedException {
 
-        ModelAndView mav = new ModelAndView(deleteuser);
+        ModelAndView mav = new ModelAndView(deleteUser);
 
-        mav.addObject("nombre", new UserDto());
+        mav.addObject("nombre", new UserEntity());
         mav.addObject("lista", userService.listAll());
 
         return mav;
@@ -82,9 +84,30 @@ public class Controller {
     }
 
     @PostMapping("/deleteUser")
-    public String borrarUser(@ModelAttribute("nombre") UserDto id){
+    public String borrarUser(@ModelAttribute("nombre") UserEntity id){
 
-        /*userService.delete("eEfN4By8Efyk2fTuhxoqz");*/
+        userService.delete(id.getUser());
+
+        return inicio;
+
+    }
+
+    @GetMapping("/updateUser")
+    public ModelAndView updateUser() throws ExecutionException, InterruptedException {
+
+        ModelAndView mav = new ModelAndView(updateUser);
+
+        mav.addObject("user", new UserEntity());
+        mav.addObject("lista", userService.listAll());
+
+        return mav;
+
+    }
+
+    @PostMapping("/updateUser")
+    public String modificarUser(@ModelAttribute("user") UserEntity userEntity){
+
+        userService.update(userEntity);
 
         return inicio;
 

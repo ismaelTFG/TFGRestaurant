@@ -10,6 +10,8 @@ public interface UserService {
 
     public abstract List<UserEntity> listAll() throws ExecutionException, InterruptedException;
     public abstract boolean add(UserEntity userEntity);
+    public abstract boolean delete(String id);
+    public abstract boolean update(UserEntity userEntity);
 
     public abstract UserEntity DtoToEntity(UserDto userDto);
 
