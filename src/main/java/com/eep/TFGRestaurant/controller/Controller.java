@@ -1,7 +1,8 @@
 package com.eep.TFGRestaurant.controller;
 
+import com.eep.TFGRestaurant.entity.productos.ProductosDto;
 import com.eep.TFGRestaurant.entity.user.UserDto;
-import com.eep.TFGRestaurant.entity.user.UserEntity;
+import com.eep.TFGRestaurant.service.ProductosService;
 import com.eep.TFGRestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,20 +16,20 @@ import java.util.concurrent.ExecutionException;
 @org.springframework.stereotype.Controller
 public class Controller {
 
-    private static final String index = "index";
-    private static final String inicio = "inicio";
-    private static final String addUser = "adduser";
-    private static final String deleteUser = "deleteuser";
-    private static final String updateUser = "updateuser";
+    Html html = new Html();
 
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
 
+    @Autowired
+    @Qualifier("productosServiceImpl")
+    private ProductosService productosService;
+
     @GetMapping("/")
     public ModelAndView index(){
 
-        ModelAndView mav = new ModelAndView(index);
+        ModelAndView mav = new ModelAndView(html.index);
 
         mav.addObject("user", new UserDto());
 
@@ -41,20 +42,38 @@ public class Controller {
 
         if (userService.validar(userService.DtoToEntity(userDto))){
 
-            return inicio;
+            return html.inicio;
 
         }else {
 
-            return index;
+            return html.index;
 
         }
+
+    }
+
+    @GetMapping("/user")
+    public ModelAndView user(){
+
+        ModelAndView mav = new ModelAndView(html.user);
+
+        return mav;
+
+    }
+
+    @GetMapping("/productos")
+    public ModelAndView productos(){
+
+        ModelAndView mav = new ModelAndView(html.productos);
+
+        return mav;
 
     }
 
     @GetMapping("/addUser")
     public ModelAndView addUser(){
 
-        ModelAndView mav = new ModelAndView(addUser);
+        ModelAndView mav = new ModelAndView(html.addUser);
 
         mav.addObject("user", new UserDto());
 
@@ -67,16 +86,16 @@ public class Controller {
 
         userService.add(userService.DtoToEntity(userDto));
 
-        return inicio;
+        return html.inicio;
 
     }
 
     @GetMapping("/deleteUser")
     public ModelAndView deleteUser() throws ExecutionException, InterruptedException {
 
-        ModelAndView mav = new ModelAndView(deleteUser);
+        ModelAndView mav = new ModelAndView(html.deleteUser);
 
-        mav.addObject("nombre", new UserEntity());
+        mav.addObject("nombre", new UserDto());
         mav.addObject("lista", userService.listAll());
 
         return mav;
@@ -84,20 +103,20 @@ public class Controller {
     }
 
     @PostMapping("/deleteUser")
-    public String borrarUser(@ModelAttribute("nombre") UserEntity id){
+    public String borrarUser(@ModelAttribute("nombre") UserDto id){
 
         userService.delete(id.getUser());
 
-        return inicio;
+        return html.inicio;
 
     }
 
     @GetMapping("/updateUser")
     public ModelAndView updateUser() throws ExecutionException, InterruptedException {
 
-        ModelAndView mav = new ModelAndView(updateUser);
+        ModelAndView mav = new ModelAndView(html.updateUser);
 
-        mav.addObject("user", new UserEntity());
+        mav.addObject("user", new UserDto());
         mav.addObject("lista", userService.listAll());
 
         return mav;
@@ -105,11 +124,73 @@ public class Controller {
     }
 
     @PostMapping("/updateUser")
-    public String modificarUser(@ModelAttribute("user") UserEntity userEntity){
+    public String modificarUser(@ModelAttribute("user") UserDto userDto){
 
-        userService.update(userEntity);
+        userService.update(userService.DtoToEntity(userDto));
 
-        return inicio;
+        return html.inicio;
+
+    }
+
+    @GetMapping("/addProductos")
+    public ModelAndView addProductos(){
+
+        ModelAndView mav = new ModelAndView(html.addProductos);
+
+        mav.addObject("producto", new ProductosDto());
+
+        return mav;
+
+    }
+
+    @PostMapping("/addProductos")
+    public String anyadirproducto(@ModelAttribute("producto") ProductosDto productosDto){
+
+        productosService.add(productosService.DtoToEntity(productosDto));
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/deleteProductos")
+    public ModelAndView deleteProducto(){
+
+        ModelAndView mav = new ModelAndView(html.deleteProductos);
+
+        mav.addObject("lista", productosService.listAll());
+        mav.addObject("producto", new ProductosDto());
+
+        return mav;
+
+    }
+
+    @PostMapping("/deleteProductos")
+    public String borrarProducto(@ModelAttribute("producto") ProductosDto productosDto){
+
+        productosService.delete(productosDto.getId());
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/updateProductos")
+    public ModelAndView updateProducto(){
+
+        ModelAndView mav = new ModelAndView(html.updateProductos);
+
+        mav.addObject("producto", new ProductosDto());
+        mav.addObject("lista", productosService.listAll());
+
+        return mav;
+
+    }
+
+    @PostMapping("/updateProductos")
+    public String modificarProducto(@ModelAttribute("producto") ProductosDto productosDto){
+
+        productosService.update(productosService.DtoToEntity(productosDto));
+
+        return html.inicio;
 
     }
 

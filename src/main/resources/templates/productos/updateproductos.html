@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>modificar</title>
+</head>
+<body>
+    <h1>Modificar</h1>
+    <form action="#" th:action="@{/updateProductos}" method="post">
+        <select th:field="*{producto.id}">
+            <option th:each="i : ${lista}" th:value="${i.id}"><span th:text="${i.nombre}"></span></option>
+        </select>
+        <p>nombre</p>
+        <input type="text" th:field="${producto.nombre}">
+        <p>categoria</p>
+        <input type="text" th:field="${producto.categoria}">
+        <p>precio</p>
+        <input type="text" th:field="${producto.precio}">
+        <p><input type="submit"></p>
+    </form>
+</body>
+</html>
