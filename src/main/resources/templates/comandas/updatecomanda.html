@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>update</title>
+</head>
+<body>
+    <h1>addproductotocomanda</h1>
+    <form action="#" th:action="@{/updateComanda}" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <td>mesa</td>
+                    <td>camarero</td>
+                    <td>fecha</td>
+                    <td>seleccion</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="i : ${listacomandas}">
+                    <td><span th:text="${i.mesa}"></span></td>
+                    <td><span th:text="${i.camarero}"></span></td>
+                    <td><span th:text="${i.fecha}"></span></td>
+                    <td><input type="radio" th:field="${comanda.mesa}" th:value="${i.mesa}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>camarero</p>
+        <input type="text" th:field="${comanda.camarero}">
+        <table>
+            <thead>
+                <tr>
+                    <td>codigo</td>
+                    <td>producto</td>
+                    <td>seleccion</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="i : ${lista}">
+                    <td><span th:text="${i.id}"></span></td>
+                    <td><span th:text="${i.nombre}"></span></td>
+                    <td><input type="checkbox" th:value="${i.id}" th:name="seleccion"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit">
+    </form>
+</body>
+</html>

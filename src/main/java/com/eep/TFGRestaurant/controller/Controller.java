@@ -1,7 +1,9 @@
 package com.eep.TFGRestaurant.controller;
 
+import com.eep.TFGRestaurant.entity.comandas.ComandasDTO;
 import com.eep.TFGRestaurant.entity.productos.ProductosDto;
 import com.eep.TFGRestaurant.entity.user.UserDto;
+import com.eep.TFGRestaurant.service.ComandasService;
 import com.eep.TFGRestaurant.service.ProductosService;
 import com.eep.TFGRestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 @org.springframework.stereotype.Controller
@@ -25,6 +29,10 @@ public class Controller {
     @Autowired
     @Qualifier("productosServiceImpl")
     private ProductosService productosService;
+
+    @Autowired
+    @Qualifier("comandasServiceImpl")
+    private ComandasService comandasService;
 
     @GetMapping("/")
     public ModelAndView index(){
@@ -65,6 +73,15 @@ public class Controller {
     public ModelAndView productos(){
 
         ModelAndView mav = new ModelAndView(html.productos);
+
+        return mav;
+
+    }
+
+    @GetMapping("/comandas")
+    public ModelAndView comandas(){
+
+        ModelAndView mav = new ModelAndView(html.comandas);
 
         return mav;
 
@@ -189,6 +206,111 @@ public class Controller {
     public String modificarProducto(@ModelAttribute("producto") ProductosDto productosDto){
 
         productosService.update(productosService.DtoToEntity(productosDto));
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/addComandas")
+    public ModelAndView addComandas(){
+
+        ModelAndView mav = new ModelAndView(html.addComandas);
+
+        mav.addObject("comanda", new ComandasDTO());
+
+        return mav;
+
+    }
+
+    @PostMapping("/addComandas")
+    public String anyadirComandas(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+
+        comandasService.add(comandasService.DtoToEntity(comandasDTO));
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/updateComandas")
+    public ModelAndView updateComandas(){
+
+        ModelAndView mav = new ModelAndView(html.updateComanda);
+
+        mav.addObject("listacomandas", comandasService.listAll());
+        mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("lista", productosService.listAll());
+
+        return mav;
+
+    }
+
+    @PostMapping("/updateComanda")
+    public String modificarComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<String> seleccionados){
+
+        comandasService.addProductos(comandasDTO, seleccionados);
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/deleteComandas")
+    public ModelAndView deleteComandas(){
+
+        ModelAndView mav = new ModelAndView(html.deleteComandas);
+
+        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("comanda", new ComandasDTO());
+
+        return mav;
+
+    }
+
+    @PostMapping("/deleteComandas")
+    public String eliminarComandas(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+
+        comandasService.delete(comandasDTO.getMesa());
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/pagarComanda")
+    public ModelAndView pagarComanda(){
+
+        ModelAndView mav = new ModelAndView(html.pagarComandas);
+
+        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("comanda", new ComandasDTO());
+
+        return mav;
+
+    }
+
+    @PostMapping("/pagarComanda")
+    public String ticket(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+
+        comandasService.pagar(comandasService.findByMesa(comandasDTO.getMesa()));
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/pagadaComanda")
+    public ModelAndView comandaPagada(){
+
+        ModelAndView mav = new ModelAndView(html.comandaPagada);
+
+        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("comanda", new ComandasDTO());
+
+        return mav;
+
+    }
+
+    @PostMapping("/pagadaComanda")
+    public String addComandaPagada(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+
+        comandasService.pagada(comandasService.findByMesa(comandasDTO.getMesa()));
 
         return html.inicio;
 
