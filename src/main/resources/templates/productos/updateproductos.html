@@ -8,7 +8,7 @@
     <h1>Modificar</h1>
     <form action="#" th:action="@{/updateProductos}" method="post">
         <select th:field="*{producto.id}">
-            <option th:each="i : ${lista}" th:value="${i.id}"><span th:text="${i.nombre}"></span></option>
+            <option th:each="i : ${lista}" th:value="${i.id}"><span th:text="${i.id}"></span></option>
         </select>
         <p>nombre</p>
         <input type="text" th:field="${producto.nombre}">

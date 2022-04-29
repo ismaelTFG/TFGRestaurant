@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+</head>
+<body>
+    <h1>addcomanda</h1>
+    <form action="#" th:action="@{/addComandas}" method="post">
+        <p>mesa</p>
+        <input type="number" th:field="${comanda.mesa}">
+        <p>camarero</p>
+        <input type="text" th:field="${comanda.camarero}">
+        <p><input type="submit"></p>
+    </form>
+</body>
+</html>
