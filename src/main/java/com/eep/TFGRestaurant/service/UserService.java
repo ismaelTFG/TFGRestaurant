@@ -2,6 +2,7 @@ package com.eep.TFGRestaurant.service;
 
 import com.eep.TFGRestaurant.entity.user.UserDto;
 import com.eep.TFGRestaurant.entity.user.UserEntity;
+import com.eep.TFGRestaurant.entity.user.UserResponse;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -12,8 +13,10 @@ public interface UserService {
     public abstract boolean add(UserEntity userEntity);
     public abstract boolean delete(String id);
     public abstract boolean update(UserEntity userEntity);
+    public abstract UserEntity findByUser(String user);
 
     public abstract UserEntity DtoToEntity(UserDto userDto);
+    public abstract UserResponse entityToResponse(UserEntity userEntity);
 
     public abstract boolean validar(UserEntity userEntity);
 

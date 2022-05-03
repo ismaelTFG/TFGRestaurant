@@ -3,6 +3,7 @@ package com.eep.TFGRestaurant.serviceImpl;
 
 import com.eep.TFGRestaurant.entity.user.UserDto;
 import com.eep.TFGRestaurant.entity.user.UserEntity;
+import com.eep.TFGRestaurant.entity.user.UserResponse;
 import com.eep.TFGRestaurant.repository.FireBase;
 import com.eep.TFGRestaurant.service.UserService;
 import com.google.api.core.ApiFuture;
@@ -139,9 +140,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findByUser(String user) {
+
+        List<UserEntity> list = listAll();
+
+        for (UserEntity i:list){
+            if (i.getUser().equals(user)){
+
+                return i;
+
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public UserEntity DtoToEntity(UserDto userDto) {
 
         return new UserEntity(userDto.getUser(), userDto.getPassword(), userDto.isAdmi());
+
+    }
+
+    @Override
+    public UserResponse entityToResponse(UserEntity userEntity) {
+
+        return new UserResponse(userEntity.getUser(), userEntity.getPassword(), userEntity.isAdmi());
 
     }
 
