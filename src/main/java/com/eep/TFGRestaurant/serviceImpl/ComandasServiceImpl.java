@@ -196,6 +196,34 @@ public class ComandasServiceImpl implements ComandasService {
     }
 
     @Override
+    public boolean deleteProductos(ComandasDTO comandasDTO, ArrayList<Integer> seleccionados) {
+
+        ComandasEntity comandasEntity = findByMesa(comandasDTO.getMesa());
+        List<String> add = comandasEntity.getProductos();
+
+        for (Integer i:seleccionados){
+
+            int posicion = i;
+
+            add.set(posicion, "");
+
+        }
+
+        for (int i = 0; i < add.size(); i++){
+            if (add.get(i).equals("")){
+
+                add.remove(i);
+
+            }
+        }
+
+        comandasEntity.setProductos(add);
+        update(comandasEntity);
+
+        return false;
+    }
+
+    @Override
     public ComandasEntity DtoToEntity(ComandasDTO comandasDto) {
 
         return new ComandasEntity(comandasDto.getMesa(), comandasDto.getCamarero(), comandasDto.getFecha(), comandasDto.getProductos());
