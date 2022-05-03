@@ -5,12 +5,14 @@ import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasDto;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.productos.ProductosDto;
 import com.eep.TFGRestaurant.entity.user.UserDto;
+import com.eep.TFGRestaurant.entity.user.UserResponse;
 import com.eep.TFGRestaurant.service.ComandasPagadasService;
 import com.eep.TFGRestaurant.service.ComandasService;
 import com.eep.TFGRestaurant.service.ProductosService;
 import com.eep.TFGRestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +25,8 @@ import java.util.concurrent.ExecutionException;
 @org.springframework.stereotype.Controller
 public class Controller {
 
-    Html html = new Html();
+    private static final Html html = new Html();
+    private static UserResponse sinuser = new UserResponse("sinuser", "", false);
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -53,9 +56,12 @@ public class Controller {
     }
 
     @PostMapping("/inicio")
-    public String inicio(@ModelAttribute("user") UserDto userDto){
+    public String inicio(@ModelAttribute("user") UserDto userDto, Model model){
 
         if (userService.validar(userService.DtoToEntity(userDto))){
+
+            sinuser = userService.entityToResponse(userService.findByUser(userDto.getUser()));
+            model.addAttribute("inicio", sinuser);
 
             return html.inicio;
 
@@ -67,28 +73,12 @@ public class Controller {
 
     }
 
-    @GetMapping("/user")
-    public ModelAndView user(){
+    @GetMapping("/inicio")
+    public ModelAndView ini(){
 
-        ModelAndView mav = new ModelAndView(html.user);
+        ModelAndView mav = new ModelAndView(html.inicio);
 
-        return mav;
-
-    }
-
-    @GetMapping("/productos")
-    public ModelAndView productos(){
-
-        ModelAndView mav = new ModelAndView(html.productos);
-
-        return mav;
-
-    }
-
-    @GetMapping("/comandas")
-    public ModelAndView comandas(){
-
-        ModelAndView mav = new ModelAndView(html.comandas);
+        mav.addObject("inicio", sinuser);
 
         return mav;
 

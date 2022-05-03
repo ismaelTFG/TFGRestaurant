@@ -1,12 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>inicio</title>
+    <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
-<body>
-    <a href="/user">usuarios</a>
-    <a href="/productos">productos</a>
-    <a href="/comandas">comandas</a>
+<body class="bg-dark d-flex">
+    <header>
+        <div class="d-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
+            <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
+                <p>TFGRestaurant</p>
+            </a>
+            <hr>
+            <div class="flex-column mb-auto" >
+                <div id="acordionuser" th:if="${inicio.admi}">
+                    <div class="card">
+                        <div class="card-heades" id="user">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseuser" aria-spanded="true" aria-controls="#collapseuser">Usuarios</button>
+                        </div>
+                        <div class="collapse" id="collapseuser" arial-labelledby="user" data-parent="#accordionuser">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addUser" class="nav-link link-dark">Añadir nuevo usuario</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteUser" class="nav-link link-dark">Eliminar Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="/updateUser" class="nav-link link-dark">Modificar un usuario</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionproductos" th:if="${inicio.admi}">
+                    <div class="card">
+                        <div class="card-heades" id="headingproductos">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
+                        </div>
+                        <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/updateProductos" class="nav-link link-dark">Modificar un producto</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordioncomanda">
+                    <div class="card">
+                        <div class="card-heades" id="headingcomanda">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapsecomanda" aria-spanded="true" aria-controls="#collapsecomanda">Comandas</button>
+                        </div>
+                        <div class="collapse" id="collapsecomanda" arial-labelledby="headingcomanda" data-parent="#acordioncomanda">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addComandas" class="nav-link link-dark">Añadir nuevo comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/updateComandas" class="nav-link link-dark">Modificar y añadir productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteProductosComanda" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteComandas" class="nav-link link-dark">Eliminar comandas</a>
+                                </li>
+                                <li>
+                                    <a href="/pagarComanda" class="nav-link link-dark">Ticket de comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/pagadaComanda" class="nav-link link-dark">Comanda pagada</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionantiguas">
+                    <div class="card">
+                        <div class="card-heades" id="headingantiguas">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseantiguas" aria-spanded="true" aria-controls="#collapseantiguas">Comandas antiguas</button>
+                        </div>
+                        <div class="collapse" id="collapseantiguas" arial-labelledby="headingantiguas" data-parent="#acordionantiguas">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/verComandasAntiguas" class="nav-link link-dark">Ver comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/deleteComandasAntiguas" class="nav-link link-dark">Eliminar comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/updateComandasAntiguas" class="nav-link link-dark">Modificar una comanda antigua</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <span th:text="${inicio.user}"></span>
+                <a href="/" class="btn btn-primary">cerrar sesion</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row m-3" th:if="${inicio.admi}">
+                <div class="col-6">
+                    <div class="card-body bg-light rounded m-3">
+                        <h3 class="card-title">Usuarios</h3>
+                        <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de los usuarios.</p>
+                        <a href="/addUser" class="btn btn-primary m-1 w-100">Añadir usuario</a>
+                        <a href="/deleteUser" class="btn btn-primary m-1 w-100">Borrar usuarios</a>
+                        <a href="/updateUser" class="btn btn-primary m-1 w-100">Modificar usuario</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card-body bg-light rounded m-3">
+                        <h3 class="card-title">Productos</h3>
+                        <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de los productos.</p>
+                        <a href="/addProductos" class="btn btn-primary m-1 w-100">Añadir producto</a>
+                        <a href="/deleteProductos" class="btn btn-primary m-1 w-100">Eliminar productos</a>
+                        <a href="/updateProductos" class="btn btn-primary m-1 w-100">Modificar producto</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-3">
+                <div class="col-6">
+                    <div class="card-body bg-light rounded m-3">
+                        <h3 class="card-title">Comandas</h3>
+                        <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de las comandas</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6 pb-2">
+                                    <a href="/addComandas" class="btn btn-primary mb-1 mx-1 w-100 h-100">Añadir Comanda</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/updateComandas" class="btn btn-primary mb-1 mx-1 w-100">Añadir productos y modificacion</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="/deleteProductosComanda" class="btn btn-primary mb-1 mx-1 w-100">Eliminar productos</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/deleteComandas" class="btn btn-primary mb-1 mx-1 w-100">Eliminar comandas</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="/pagarComanda" class="btn btn-primary mx-1 w-100">Ticket de comanda</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/pagadaComanda" class="btn btn-primary mx-1 w-100">Comanda pagada</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card-body bg-light rounded m-3">
+                        <h3 class="card-title">Comandas antiguas</h3>
+                        <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de las comandas antiguas</p>
+                        <a href="/verComandasAntiguas" class="btn btn-primary m-1 w-100">Ver comandas</a>
+                        <a href="/deleteComandasAntiguas" class="btn btn-primary m-1 w-100" th:if="${inicio.admi}">Borrar comandas</a>
+                        <a href="/updateComandasAntiguas" class="btn btn-primary m-1 w-100" th:if="${inicio.admi}">Modificar comanda</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
