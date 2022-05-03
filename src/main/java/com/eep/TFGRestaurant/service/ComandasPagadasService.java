@@ -11,6 +11,8 @@ public interface ComandasPagadasService {
     public abstract List<ComandasPagadasEntity> listAll();
     public abstract boolean add(ComandasPagadasEntity comandasPagadasEntity);
     public abstract boolean update(ComandasPagadasEntity comandasPagadasEntity);
+    public abstract boolean delete(String id);
+    public abstract ComandasPagadasEntity findById(String id);
 
     public abstract ComandasPagadasEntity dtoToEntity(ComandasPagadasDto comandasPagadasDto);
     public abstract ComandasPagadasResponse entityToResponse(ComandasPagadasEntity comandasPagadasEntity);

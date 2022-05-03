@@ -1,8 +1,11 @@
 package com.eep.TFGRestaurant.controller;
 
 import com.eep.TFGRestaurant.entity.comandas.ComandasDTO;
+import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasDto;
+import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.productos.ProductosDto;
 import com.eep.TFGRestaurant.entity.user.UserDto;
+import com.eep.TFGRestaurant.service.ComandasPagadasService;
 import com.eep.TFGRestaurant.service.ComandasService;
 import com.eep.TFGRestaurant.service.ProductosService;
 import com.eep.TFGRestaurant.service.UserService;
@@ -33,6 +36,10 @@ public class Controller {
     @Autowired
     @Qualifier("comandasServiceImpl")
     private ComandasService comandasService;
+
+    @Autowired
+    @Qualifier("comandasPagadasServiceImpl")
+    private ComandasPagadasService comandasPagadasService;
 
     @GetMapping("/")
     public ModelAndView index(){
@@ -253,6 +260,27 @@ public class Controller {
 
     }
 
+    @GetMapping("/deleteProductosComanda")
+    public ModelAndView deleteProductosComanda(){
+
+        ModelAndView mav = new ModelAndView(html.deleteProductosComandas);
+
+        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("comanda", new ComandasDTO());
+
+        return mav;
+
+    }
+
+    @PostMapping("/deleteProductosComanda")
+    public String eliminarProductosComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<Integer> seleccionados){
+
+        comandasService.deleteProductos(comandasDTO, seleccionados);
+
+        return html.inicio;
+
+    }
+
     @GetMapping("/deleteComandas")
     public ModelAndView deleteComandas(){
 
@@ -311,6 +339,62 @@ public class Controller {
     public String addComandaPagada(@ModelAttribute("comanda") ComandasDTO comandasDTO){
 
         comandasService.pagada(comandasService.findByMesa(comandasDTO.getMesa()));
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/verComandasAntiguas")
+    public ModelAndView verComandasAntiguas(){
+
+        ModelAndView mav = new ModelAndView(html.ComandasAntiguas);
+
+        mav.addObject("lista", comandasPagadasService.listAll());
+
+        return mav;
+
+    }
+
+    @GetMapping("/deleteComandasAntiguas")
+    public ModelAndView deleteComandasAntiguas(){
+
+        ModelAndView mav = new ModelAndView(html.deleteComandasAntiguas);
+
+        mav.addObject("lista", comandasPagadasService.listAll());
+        mav.addObject("comanda", new ComandasPagadasDto());
+
+        return mav;
+
+    }
+
+    @PostMapping("/deleteComandasAntiguas")
+    public String eliminarComandasAntiguas(@ModelAttribute("comanda") ComandasPagadasDto comandasPagadasDto){
+
+        comandasPagadasService.delete(comandasPagadasDto.getId());
+
+        return html.inicio;
+
+    }
+
+    @GetMapping("/updateComandasAntiguas")
+    public ModelAndView updateComandasAntiguas(){
+
+        ModelAndView mav = new ModelAndView(html.updateComandasAntiguas);
+
+        mav.addObject("lista", comandasPagadasService.listAll());
+        mav.addObject("comanda", new ComandasPagadasDto());
+
+        return mav;
+
+    }
+
+    @PostMapping("/updateComandasAntiguas")
+    public String modificarComandaAntiguas(@ModelAttribute("comanda") ComandasPagadasDto comandasPagadasDto){
+
+        ComandasPagadasEntity comandasPagadasEntity = comandasPagadasService.findById(comandasPagadasDto.getId());
+
+        comandasPagadasEntity.setCamarero(comandasPagadasDto.getCamarero());
+        comandasPagadasService.update(comandasPagadasEntity);
 
         return html.inicio;
 

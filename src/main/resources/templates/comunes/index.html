@@ -2,16 +2,25 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>inicio</title>
+    <title>Inicio</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
-<body>
-    <h1>Inicio</h1>
-    <form action="#" th:action="@{/inicio}" method="post">
-        <p>Usuario</p>
-        <input type="text" th:field="${user.user}">
-        <p>Contraseña</p>
-        <input type="password" th:field="${user.password}">
-        <p><input type="submit"></p>
-    </form>
+<body class="text-center">
+    <main class="form-signin">
+        <form action="#" th:action="@{/inicio}" method="post">
+            <img src="../img/icono.jpg" alt="">
+            <h1 class="h3 mb-3 fw-normal">Inicio de Sesion</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" th:field="${user.user}">
+                <label for="floatingInput">Nombre de usuario</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" th:field="${user.password}">
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar sesion</button>
+            <p class="mt-5 mt-3 text-muted">@Ismael Mónico Sienes</p>
+        </form>
+    </main>
 </body>
 </html>

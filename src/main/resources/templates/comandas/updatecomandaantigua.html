@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>updatecomandaantigua</h1>
+    <form action="#" th:action="@{/updateComandasAntiguas}" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <td>mesa</td>
+                    <td>camarero</td>
+                    <td>fecha</td>
+                    <td>seleccion</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="i : ${lista}">
+                    <td><span th:text="${i.mesa}"></span></td>
+                    <td><span th:text="${i.camarero}"></span></td>
+                    <td><span th:text="${i.fecha}"></span></td>
+                    <td><input type="radio" th:field="${comanda.id}" th:value="${i.id}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>camarero</p>
+        <input type="text" th:field="${comanda.camarero}">
+        <p><input type="submit"></p>
+    </form>
+</body>
+</html>

@@ -16,6 +16,7 @@ public interface ComandasService {
     public abstract boolean update(ComandasEntity comandasEntity);
     public abstract ComandasEntity findByMesa(int mesa);
     public abstract boolean addProductos(ComandasDTO comandasDTO, ArrayList<String> seleccionados);
+    public abstract boolean deleteProductos(ComandasDTO comandasDTO, ArrayList<Integer> seleccionados);
 
 
     public abstract ComandasEntity DtoToEntity(ComandasDTO comandasDto);
