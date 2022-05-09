@@ -2,22 +2,185 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>update</title>
+    <title>Modificar usuario</title>
+    <link rel="shortcut icon" type="image/png" href="../../static/img/icono.png" th:href="@{img/icono.png}">
+    <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
-<body>
-    <h1>Modificar</h1>
-    <form action="#" th:action="@{/updateUser}" method="post">
-        <select th:field="*{user.user}">
-            <option th:each="i : ${lista}" th:value="${i.user}"><span th:text="${i.user}"></span></option>
-        </select>
-        <p>Contraseña</p>
-        <input type="password" th:field="${user.password}">
-        <p>administrador
-            <input type="radio" th:field="${user.admi}" th:value="true">
-            no administrador
-            <input type="radio" th:field="${user.admi}" th:value="false">
-        </p>
-        <p><input type="submit"></p>
-    </form>
+<body class="bg-dark d-flex">
+    <header>
+        <div class="d-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
+            <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
+                <p>TFGRestaurant</p>
+            </a>
+            <hr>
+            <div class="flex-column mb-auto" >
+                <div id="acordionuser" th:if="${inicio.admi}">
+                    <div class="card">
+                        <div class="card-heades" id="user">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseuser" aria-spanded="true" aria-controls="#collapseuser">Usuarios</button>
+                        </div>
+                        <div class="collapse" id="collapseuser" arial-labelledby="user" data-parent="#accordionuser">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addUser" class="nav-link link-dark active bg-secondary text-light">Añadir nuevo usuario</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteUser" class="nav-link link-dark">Eliminar Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="/updateUser" class="nav-link link-dark">Modificar un usuario</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionproductos" th:if="${inicio.admi}">
+                    <div class="card">
+                        <div class="card-heades" id="headingproductos">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
+                        </div>
+                        <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/updateProductos" class="nav-link link-dark">Modificar un producto</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordioncomanda">
+                    <div class="card">
+                        <div class="card-heades" id="headingcomanda">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapsecomanda" aria-spanded="true" aria-controls="#collapsecomanda">Comandas</button>
+                        </div>
+                        <div class="collapse" id="collapsecomanda" arial-labelledby="headingcomanda" data-parent="#acordioncomanda">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addComandas" class="nav-link link-dark">Añadir nuevo comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/updateComandas" class="nav-link link-dark">Modificar y añadir productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteProductosComanda" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteComandas" class="nav-link link-dark">Eliminar comandas</a>
+                                </li>
+                                <li>
+                                    <a href="/pagarComanda" class="nav-link link-dark">Ticket de comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/pagadaComanda" class="nav-link link-dark">Comanda pagada</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionantiguas">
+                    <div class="card">
+                        <div class="card-heades" id="headingantiguas">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseantiguas" aria-spanded="true" aria-controls="#collapseantiguas">Comandas antiguas</button>
+                        </div>
+                        <div class="collapse" id="collapseantiguas" arial-labelledby="headingantiguas" data-parent="#acordionantiguas">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/verComandasAntiguas" class="nav-link link-dark">Ver comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/deleteComandasAntiguas" class="nav-link link-dark">Eliminar comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/updateComandasAntiguas" class="nav-link link-dark">Modificar una comanda antigua</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <span th:text="${inicio.user}"></span>
+                <a href="/" class="btn btn-primary">cerrar sesion</a>
+            </div>
+        </div>
+    </header>
+    <main class="w-100">
+        <div class="container">
+            <div class="row" style="height: 100vh;">
+                <div class="col bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
+                    <div class="m-auto">
+                        <h1 class="text-center m-2">Modificar usuario</h1>
+                        <form action="#" th:action="@{/updateUser}" method="post">
+                            <div class="m-2 alert alert-success" th:if="${correcto}">
+                                <h3>Correcto</h3>
+                                <p>El usuario se a introducido correctamente.</p>
+                            </div>
+                            <div class="m-2 alert alert-danger" th:if="${error}">
+                                <h3>ERROR</h3>
+                                <p>
+                                    <span th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}"></span>
+                                </p>
+                            </div>
+                            <div class="form-group text-center m-2">
+                                <label for="usuario">Usuario a modificar</label>
+                                <select class="form-control form-control-sm" th:field="${user.user}" id="usuario">
+                                    <option th:each="i : ${lista}" th:value="${i.user}"><span th:text="${i.user}"></span></option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center m-2">
+                                <label for="password">Nueva contraseña</label>
+                                <input type="text" class="form-control" id="password" th:field="${user.password}">
+                            </div>
+                            <div class="form-group text-center m-2">
+                                <h3 class="text-center m-2">Nuevo tipo de usuario</h3>
+                                <div class="form-check d-flex align-item-center justify-content-center m-2">
+                                    <input type="radio" id="usertrue" class="form-check-input" th:field="${user.admi}" th:value="true">
+                                    <label class="form-check-label" for="usertrue">Administrador</label>
+                                </div>
+                                <div class="form-check d-flex align-item-center justify-content-center m-2">
+                                    <input type="radio" id="userfalse" class="form-check-input" th:field="${user.admi}" th:value="false">
+                                    <label for="userfalse" class="form-check-label">No administrador</label>
+                                </div>
+                            </div>
+                            <div class="text-center m-2" th:if="${inicio.admi}">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boton">Modificar usuarios</button>
+                                <div class="modal fade" id="boton" tapindex="-1" role="dialog" aria-labelledby="boton" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="alert alert-warning">
+                                                    <h3>Advertencia</h3>
+                                                    <p>estas seguro que quieres modificar este usuario.</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success">Si</button>
+                                                <button class="btn btn-light" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-2 alert alert-danger" th:if="!${inicio.admi}">
+                                <h3>Advertencia</h3>
+                                <p>No eres un usuario administrador, cambia de usuario si quieres usar esta función.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -13,12 +13,14 @@ import com.eep.TFGRestaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -26,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class Controller {
 
     private static final Html html = new Html();
-    private static UserResponse sinuser = new UserResponse("sinuser", "", false);
+    private static UserResponse user = new UserResponse("sinuser", "", false);
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -50,6 +52,7 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.index);
 
         mav.addObject("user", new UserDto());
+        mav.addObject("correcto", false);
 
         return mav;
 
@@ -60,12 +63,15 @@ public class Controller {
 
         if (userService.validar(userService.DtoToEntity(userDto))){
 
-            sinuser = userService.entityToResponse(userService.findByUser(userDto.getUser()));
-            model.addAttribute("inicio", sinuser);
+            user = userService.entityToResponse(userService.findByUser(userDto.getUser()));
+            model.addAttribute("inicio", user);
 
             return html.inicio;
 
         }else {
+
+            model.addAttribute("user", userDto);
+            model.addAttribute("correcto", true);
 
             return html.index;
 
@@ -78,7 +84,7 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.inicio);
 
-        mav.addObject("inicio", sinuser);
+        mav.addObject("inicio", user);
 
         return mav;
 
@@ -90,59 +96,126 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.addUser);
 
         mav.addObject("user", new UserDto());
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
+        mav.addObject("nouser", false);
 
         return mav;
 
     }
 
     @PostMapping("/addUser")
-    public String anyadirUser(@ModelAttribute("user") UserDto userDto){
+    public String anyadirUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model){
 
-        userService.add(userService.DtoToEntity(userDto));
+        if (result.hasErrors()){
 
-        return html.inicio;
+            model.addAttribute("user", userDto);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("nouser", false);
+
+        }else if (userService.userNoRepetidos(userService.DtoToEntity(userDto))){
+
+            model.addAttribute("user", userDto);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("nouser", true);
+
+        }else {
+
+            userService.add(userService.DtoToEntity(userDto));
+
+            model.addAttribute("user", new UserDto());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+            model.addAttribute("nouser", false);
+
+        }
+
+        return html.addUser;
 
     }
 
     @GetMapping("/deleteUser")
-    public ModelAndView deleteUser() throws ExecutionException, InterruptedException {
+    public ModelAndView deleteUser(){
 
         ModelAndView mav = new ModelAndView(html.deleteUser);
 
-        mav.addObject("nombre", new UserDto());
-        mav.addObject("lista", userService.listAll());
+        mav.addObject("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
 
         return mav;
 
     }
 
     @PostMapping("/deleteUser")
-    public String borrarUser(@ModelAttribute("nombre") UserDto id){
+    public String borrarUser(@RequestParam(value = "seleccion") ArrayList<String> seleccionados, Model model) throws ExecutionException, InterruptedException {
 
-        userService.delete(id.getUser());
+        if (userService.manyDelete(seleccionados)){
 
-        return html.inicio;
+            model.addAttribute("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+
+        }else {
+
+            model.addAttribute("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+
+        }
+
+        return html.deleteUser;
 
     }
 
     @GetMapping("/updateUser")
-    public ModelAndView updateUser() throws ExecutionException, InterruptedException {
+    public ModelAndView updateUser(){
 
         ModelAndView mav = new ModelAndView(html.updateUser);
 
         mav.addObject("user", new UserDto());
-        mav.addObject("lista", userService.listAll());
+        mav.addObject("lista", userService.listAllSinUser(user));
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
+        mav.addObject("inicio", user);
 
         return mav;
 
     }
 
     @PostMapping("/updateUser")
-    public String modificarUser(@ModelAttribute("user") UserDto userDto){
+    public String modificarUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result, Model model){
 
-        userService.update(userService.DtoToEntity(userDto));
+        if (result.hasErrors()){
 
-        return html.inicio;
+            model.addAttribute("user", userDto);
+            model.addAttribute("lista", userService.listAllSinUser(user));
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("inicio", user);
+
+        }else {
+
+            userService.update(userService.DtoToEntity(userDto));
+
+            model.addAttribute("user", new UserDto());
+            model.addAttribute("lista", userService.listAllSinUser(user));
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+            model.addAttribute("inicio", user);
+
+        }
+
+        return html.updateUser;
 
     }
 
@@ -152,15 +225,23 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.addProductos);
 
         mav.addObject("producto", new ProductosDto());
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
+        mav.addObject("noproducto", false);
 
         return mav;
 
     }
 
     @PostMapping("/addProductos")
-    public String anyadirproducto(@ModelAttribute("producto") ProductosDto productosDto){
+    public String anyadirproducto(@Valid @ModelAttribute("producto") ProductosDto productosDto, BindingResult result, Model model){
 
-        productosService.add(productosService.DtoToEntity(productosDto));
+        if (result.hasErrors()){
+
+
+
+        }
 
         return html.inicio;
 
