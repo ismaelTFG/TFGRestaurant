@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio</title>
+    <title>Inicio de sesión</title>
+    <link rel="shortcut icon" type="image/png" href="../../static/img/icono.png" th:href="@{img/icono.png}">
     <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body class="text-center bg-dark">
@@ -12,15 +13,19 @@
                 <div class="px-5">
                     <img src="../../static/img/icono.png" alt="" class="mb-4" width="150" height="150" th:src="@{img/icono.png}">
                     <h1 class="h3 mb-3 fw-normal text-light">Inicio de Sesión</h1>
-                    <div class="form-floating w-50 mx-auto">
+                    <div class="alert alert-danger w-50 mx-auto m-1" th:if="${correcto}">
+                        <h3>Error</h3>
+                        <p>El usuario o la contraseña introducidos no son los correctos</p>
+                    </div>
+                    <div class="form-floating w-50 mx-auto m-1">
                         <input type="text" class="form-control" id="floatingInput" th:field="${user.user}">
                         <label for="floatingInput">Nombre de usuario</label>
                     </div>
-                    <div class="form-floating w-50 mx-auto">
+                    <div class="form-floating w-50 mx-auto m-1">
                         <input type="password" class="form-control" id="floatingPassword" th:field="${user.password}">
                         <label for="floatingPassword">Contraseña</label>
                     </div>
-                    <button class="w-50 btn btn-lg btn-primary" type="submit">Iniciar sesión</button>
+                    <button class="w-50 btn btn-lg btn-primary m-1" type="submit">Iniciar sesión</button>
                     <p class="mt-5 mt-3 text-muted">@Ismael Mónico Sienes</p>
                 </div>
             </form>

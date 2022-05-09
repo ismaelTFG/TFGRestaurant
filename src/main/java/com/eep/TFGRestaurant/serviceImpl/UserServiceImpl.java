@@ -140,6 +140,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserEntity> listAllSinUser(UserResponse userResponse) {
+
+        List<UserEntity> list = listAll();
+
+        for (int i = 0; i < list.size(); i++){
+            if (list.get(i).getUser().equals(userResponse.getUser())){
+
+                list.remove(i);
+
+            }
+        }
+
+        return list;
+    }
+
+    @Override
     public UserEntity findByUser(String user) {
 
         List<UserEntity> list = listAll();
@@ -170,6 +186,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserResponse> listEntityToListRespnse(List<UserEntity> list) {
+
+        List<UserResponse> exit = new ArrayList<>();
+
+        for (UserEntity i:list){
+
+            exit.add(entityToResponse(i));
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public boolean userNoRepetidos(UserEntity userEntity) {
+
+        List<UserEntity> list = listAll();
+
+        for (UserEntity i:list){
+            if (i.getUser().equals(userEntity.getUser())){
+
+                return true;
+
+            }
+        }
+
+        return false;
+
+    }
+
+    @Override
     public boolean validar(UserEntity userEntity) {
 
         List<UserEntity> list = listAll();
@@ -182,6 +230,48 @@ public class UserServiceImpl implements UserService {
 
                 }
             }
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public boolean manyDelete(ArrayList<String> id) {
+
+        List<UserEntity> list = listAll();
+        int admi = 0;
+
+        for (UserEntity i:list){
+            if (i.isAdmi()){
+
+                admi++;
+
+            }
+        }
+
+        for (UserEntity i:list){
+            for (String j:id){
+                if (i.getUser().equals(j)){
+                    if (i.isAdmi()){
+
+                        admi = admi -1;
+
+                    }
+                }
+            }
+        }
+
+        if (admi > 0){
+
+            for (String i:id){
+
+                delete(i);
+
+            }
+
+            return true;
+
         }
 
         return false;
