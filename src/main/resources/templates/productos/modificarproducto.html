@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Añadir productos</title>
+    <title>Modificar producto</title>
     <link rel="shortcut icon" type="image/png" href="../../static/img/icono.png" th:href="@{img/icono.png}">
     <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="acordionproductos">
+                <div id="acordionproductos" th:if="${inicio.admi}">
                     <div class="card">
                         <div class="card-heades" id="headingproductos">
                             <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
@@ -43,13 +43,13 @@
                         <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li th:if="${inicio.admi}">
-                                    <a href="/addProductos" class="nav-link link-dark active bg-secondary text-light">Añadir nuevo producto</a>
+                                    <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
                                 </li>
                                 <li th:if="${inicio.admi}">
                                     <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
                                 </li>
                                 <li>
-                                    <a href="/updateProductos" class="nav-link link-dark">
+                                    <a href="/updateProductos" class="nav-link link-dark active bg-secondary text-light">
                                         <span th:if="${inicio.admi}">Modificar un productos</span>
                                         <span th:if="!${inicio.admi}">Ver productos</span>
                                     </a>
@@ -120,25 +120,9 @@
             <div class="row" style="height: 100vh;">
                 <div class="col bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
                     <div class="m-auto">
-                        <h1 class="text-center m-2">Añadir Productos</h1>
-                        <form action="#" th:action="@{/addProductos}" method="post">
-                            <div class="m-2 alert alert-success" th:if="${correcto}">
-                                <h3>Correcto</h3>
-                                <p>El usuario se a introducido correctamente.</p>
-                            </div>
-                            <div class="m-2 alert alert-danger" th:if="${error}">
-                                <h3>ERROR</h3>
-                                <p>
-                                    <span th:if="${noproducto}">Este producto ya existe</span>
-                                    <span th:if="${#fields.hasErrors('producto.id')}" th:errors="*{producto.id}"></span>
-                                    <span th:if="${#fields.hasErrors('producto.nombre')}" th:errors="*{producto.nombre}"></span>
-                                    <span th:if="${#fields.hasErrors('producto.precio')}" th:errors="*{producto.precio}"></span>
-                                </p>
-                            </div>
-                            <div class="form-group text-center m-2">
-                                <label for="labelid">Codigo del producto</label>
-                                <input type="text" class="form-control" id="labelid" th:field="${producto.id}">
-                            </div>
+                        <h1 class="text-center m-2">Modificar <span th:text="${producto.id}"></span></h1>
+                        <form action="#" th:action="@{/updateProductos}" method="post">
+                            <input type="text" class="invisible" th:field="${producto.id}">
                             <div class="form-group text-center m-2">
                                 <label for="labelnombre">Nombre del producto</label>
                                 <input type="text" class="form-control" id="labelnombre" th:field="${producto.nombre}">
@@ -161,7 +145,23 @@
                                 <input type="number" step="any" id="labelprecio" class="form-control" th:field="${producto.precio}">
                             </div>
                             <div class="text-center m-2" th:if="${inicio.admi}">
-                                <button type="submit" class="btn btn-primary">Añadir Producto</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boton">Modificar producto</button>
+                                <div class="modal fade" id="boton" tapindex="-1" role="dialog" aria-labelledby="boton" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="alert alert-warning">
+                                                    <h3>Advertencia</h3>
+                                                    <p>estas seguro que quieres modificar este producto.</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success">Si</button>
+                                                <button class="btn btn-light" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="m-2 alert alert-danger" th:if="!${inicio.admi}">
                                 <h3>Advertencia</h3>

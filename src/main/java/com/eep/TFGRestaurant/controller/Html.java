@@ -10,6 +10,7 @@ public class Html {
     String addProductos = "./productos/addproductos";
     String deleteProductos = "./productos/deleteproductos";
     String updateProductos = "./productos/updateproductos";
+    String modificarProducto = "./productos/modificarproducto";
     String addComandas = "./comandas/addcomandas";
     String updateComanda = "./comandas/updatecomanda";
     String deleteProductosComandas = "./comandas/deleteproductocomanda";
