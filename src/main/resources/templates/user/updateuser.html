@@ -23,33 +23,36 @@
                         <div class="collapse" id="collapseuser" arial-labelledby="user" data-parent="#accordionuser">
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li>
-                                    <a href="/addUser" class="nav-link link-dark active bg-secondary text-light">Añadir nuevo usuario</a>
+                                    <a href="/addUser" class="nav-link link-dark">Añadir nuevo usuario</a>
                                 </li>
                                 <li>
                                     <a href="/deleteUser" class="nav-link link-dark">Eliminar Usuarios</a>
                                 </li>
                                 <li>
-                                    <a href="/updateUser" class="nav-link link-dark">Modificar un usuario</a>
+                                    <a href="/updateUser" class="nav-link link-dark active bg-secondary text-light">Modificar un usuario</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div id="acordionproductos" th:if="${inicio.admi}">
+                <div id="acordionproductos">
                     <div class="card">
                         <div class="card-heades" id="headingproductos">
                             <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
                         </div>
                         <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
                             <ul class="nav nav-pills flex-column mb-auto">
-                                <li>
+                                <li th:if="${inicio.admi}">
                                     <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
                                 </li>
-                                <li>
+                                <li th:if="${inicio.admi}">
                                     <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
                                 </li>
                                 <li>
-                                    <a href="/updateProductos" class="nav-link link-dark">Modificar un producto</a>
+                                    <a href="/updateProductos" class="nav-link link-dark">
+                                        <span th:if="${inicio.admi}">Modificar un productos</span>
+                                        <span th:if="!${inicio.admi}">Ver productos</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

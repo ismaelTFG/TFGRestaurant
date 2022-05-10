@@ -142,6 +142,23 @@ public class ProductosServiceImpl implements ProductosService {
     }
 
     @Override
+    public ProductosEntity findById(String id) {
+
+        List<ProductosEntity> list = listAll();
+
+        for (ProductosEntity i:list){
+            if (i.getId().equals(id)){
+
+                return i;
+
+            }
+        }
+
+        return null;
+
+    }
+
+    @Override
     public ProductosEntity DtoToEntity(ProductosDto productos) {
 
         return new ProductosEntity(productos.getId(), productos.getNombre(), productos.getCategoria(), productos.getPrecio());
@@ -152,6 +169,62 @@ public class ProductosServiceImpl implements ProductosService {
     public ProductosResponse ResponseToEntity(ProductosEntity productos) {
 
         return new ProductosResponse(productos.getId(), productos.getNombre(), productos.getCategoria(), productos.getPrecio());
+
+    }
+
+    @Override
+    public boolean productoNoRepetido(ProductosEntity productos) {
+
+        List<ProductosEntity> list = listAll();
+
+        for (ProductosEntity i:list){
+            if (i.getId().equals(productos.getId())){
+
+                return true;
+
+            }
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public List<ProductosEntity> busquedacategoria(String categoria) {
+
+        List<ProductosEntity> list = listAll();
+        List<ProductosEntity> exit = new ArrayList<>();
+
+        for (ProductosEntity i:list){
+            if (i.getCategoria().equals(categoria)){
+
+                exit.add(i);
+
+            }
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public boolean manyDelete(ArrayList<String> id) {
+
+        List<ProductosEntity> list = listAll();
+
+        if (list.size() > id.size()){
+
+            for (String i:id){
+
+                delete(i);
+
+            }
+
+            return true;
+
+        }
+
+        return false;
 
     }
 

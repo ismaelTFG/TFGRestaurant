@@ -35,21 +35,24 @@
                         </div>
                     </div>
                 </div>
-                <div id="acordionproductos" th:if="${inicio.admi}">
+                <div id="acordionproductos">
                     <div class="card">
                         <div class="card-heades" id="headingproductos">
                             <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
                         </div>
                         <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
                             <ul class="nav nav-pills flex-column mb-auto">
-                                <li>
+                                <li th:if="${inicio.admi}">
                                     <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
                                 </li>
-                                <li>
+                                <li th:if="${inicio.admi}">
                                     <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
                                 </li>
                                 <li>
-                                    <a href="/updateProductos" class="nav-link link-dark">Modificar un producto</a>
+                                    <a href="/updateProductos" class="nav-link link-dark">
+                                        <span th:if="${inicio.admi}">Modificar un productos</span>
+                                        <span th:if="!${inicio.admi}">Ver productos</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -120,7 +123,7 @@
                         <h1 class="text-center m-2">Borrado de usuarios</h1>
                         <div class="m-2 alert alert-success" th:if="${correcto}">
                             <h3>Correcto</h3>
-                            <p>El usuario se a introducido correctamente.</p>
+                            <p>El usuario se a borrado correctamente.</p>
                         </div>
                         <div class="m-2 alert alert-danger" th:if="${error}">
                             <h3>ERROR</h3>

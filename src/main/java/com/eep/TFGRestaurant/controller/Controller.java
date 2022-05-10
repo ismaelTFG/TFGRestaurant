@@ -4,6 +4,7 @@ import com.eep.TFGRestaurant.entity.comandas.ComandasDTO;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasDto;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.productos.ProductosDto;
+import com.eep.TFGRestaurant.entity.productos.ProductosEntity;
 import com.eep.TFGRestaurant.entity.user.UserDto;
 import com.eep.TFGRestaurant.entity.user.UserResponse;
 import com.eep.TFGRestaurant.service.ComandasPagadasService;
@@ -239,11 +240,33 @@ public class Controller {
 
         if (result.hasErrors()){
 
+            model.addAttribute("producto", productosDto);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("noproducto", false);
 
+        }else if (productosService.productoNoRepetido(productosService.DtoToEntity(productosDto))){
+
+            model.addAttribute("producto", productosDto);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("noproducto", true);
+
+        }else {
+
+            productosService.add(productosService.DtoToEntity(productosDto));
+
+            model.addAttribute("producto", new ProductosDto());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+            model.addAttribute("noproducto", false);
 
         }
 
-        return html.inicio;
+        return html.addProductos;
 
     }
 
@@ -253,18 +276,46 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.deleteProductos);
 
         mav.addObject("lista", productosService.listAll());
-        mav.addObject("producto", new ProductosDto());
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
 
         return mav;
 
     }
 
     @PostMapping("/deleteProductos")
-    public String borrarProducto(@ModelAttribute("producto") ProductosDto productosDto){
+    public String borrarProducto(@RequestParam(value = "seleccion") ArrayList<String> id, Model model){
 
-        productosService.delete(productosDto.getId());
+        if (productosService.manyDelete(id)){
 
-        return html.inicio;
+            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+
+        }else {
+
+            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+
+        }
+
+        return html.deleteProductos;
+
+    }
+
+    @PostMapping("/busquedaproductodelete")
+    public String busquedaproducto(@RequestParam(value = "categoria") String categoria, Model model){
+
+        model.addAttribute("lista", productosService.busquedacategoria(categoria));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", false);
+        model.addAttribute("error", false);
+
+        return html.deleteProductos;
 
     }
 
@@ -273,19 +324,61 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.updateProductos);
 
-        mav.addObject("producto", new ProductosDto());
         mav.addObject("lista", productosService.listAll());
+        mav.addObject("inicio", user);
 
         return mav;
 
     }
 
+    @PostMapping("/busquedaproducto")
+    public String busquedaproductover(@RequestParam(value = "categoria") String categoria, Model model){
+
+        model.addAttribute("lista", productosService.busquedacategoria(categoria));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", false);
+        model.addAttribute("error", false);
+
+        return html.updateProductos;
+
+    }
+
+    @PostMapping("/modificarProductos")
+    public String modifProducto(@RequestParam(value = "id") String id, Model model){
+
+        ProductosEntity productos = productosService.findById(id);
+
+        model.addAttribute("producto", new ProductosDto(productos.getId(), productos.getNombre(), productos.getCategoria(), productos.getPrecio()));
+        model.addAttribute("inicio", user);
+
+        return html.modificarProducto;
+
+    }
+
     @PostMapping("/updateProductos")
-    public String modificarProducto(@ModelAttribute("producto") ProductosDto productosDto){
+    public String modificarProducto(@Valid @ModelAttribute("producto") ProductosDto productosDto, BindingResult result, Model model){
 
-        productosService.update(productosService.DtoToEntity(productosDto));
+        if (result.hasErrors()){
 
-        return html.inicio;
+            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+
+            return html.updateProductos;
+
+        }else {
+
+            productosService.update(productosService.DtoToEntity(productosDto));
+
+            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+
+            return html.updateProductos;
+
+        }
 
     }
 
