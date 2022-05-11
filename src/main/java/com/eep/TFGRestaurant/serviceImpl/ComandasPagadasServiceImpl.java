@@ -1,5 +1,6 @@
 package com.eep.TFGRestaurant.serviceImpl;
 
+import com.eep.TFGRestaurant.entity.comandas.ComandasEntity;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasDto;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasResponse;
@@ -172,6 +173,216 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
     public ComandasPagadasResponse entityToResponse(ComandasPagadasEntity comandasPagadasEntity) {
 
         return new ComandasPagadasResponse(comandasPagadasEntity.getId(), comandasPagadasEntity.getMesa(), comandasPagadasEntity.getCamarero(), comandasPagadasEntity.getFecha(), comandasPagadasEntity.getProductos(), comandasPagadasEntity.getTotal());
+
+    }
+
+    @Override
+    public List<ComandasPagadasResponse> listEntityToListResponse(List<ComandasPagadasEntity> list) {
+
+        List<ComandasPagadasResponse> exit = new ArrayList<>();
+
+        for (ComandasPagadasEntity i:list){
+
+            exit.add(entityToResponse(i));
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<ComandasPagadasResponse> filtro(ComandasPagadasDto comandasPagadasDto) {
+
+        List<ComandasPagadasResponse> exit = new ArrayList<>();
+        List<ComandasPagadasEntity> list = listAll();
+
+        if (comandasPagadasDto.getMesa() == 0){
+            if (comandasPagadasDto.getCamarero().equals("*")){
+                if (comandasPagadasDto.getFecha().equals("")){
+
+                    for (ComandasPagadasEntity i:list){
+
+                        exit.add(entityToResponse(i));
+
+                    }
+
+                }else {
+
+                    for (ComandasPagadasEntity i:list){
+                        if (i.getFecha().equals(comandasPagadasDto.getFecha())){
+
+                            exit.add(entityToResponse(i));
+
+                        }
+                    }
+
+                }
+            }else if (comandasPagadasDto.getFecha().equals("")){
+
+                for (ComandasPagadasEntity i:list){
+                    if (i.getCamarero().equals(comandasPagadasDto.getCamarero())){
+
+                        exit.add(entityToResponse(i));
+
+                    }
+                }
+
+            }else {
+
+                for (ComandasPagadasEntity i:list){
+                    if (i.getFecha().equals(comandasPagadasDto.getFecha())){
+                        if (i.getCamarero().equals(comandasPagadasDto.getCamarero())){
+
+                            exit.add(entityToResponse(i));
+
+                        }
+                    }
+                }
+
+            }
+        }else if (comandasPagadasDto.getCamarero().equals("*")){
+            if (comandasPagadasDto.getFecha().equals("")){
+
+                for (ComandasPagadasEntity i:list){
+                    if (i.getMesa() == comandasPagadasDto.getMesa()){
+
+                        exit.add(entityToResponse(i));
+
+                    }
+                }
+
+            }else {
+
+                for (ComandasPagadasEntity i:list){
+                    if (i.getFecha().equals(comandasPagadasDto.getFecha())){
+                        if (i.getMesa() == comandasPagadasDto.getMesa()){
+
+                            exit.add(entityToResponse(i));
+
+                        }
+                    }
+                }
+
+            }
+        }else if (comandasPagadasDto.getFecha().equals("")){
+
+            for (ComandasPagadasEntity i:list){
+                if (i.getCamarero().equals(comandasPagadasDto.getCamarero())){
+                    if (i.getMesa() == comandasPagadasDto.getMesa()){
+
+                        exit.add(entityToResponse(i));
+
+                    }
+                }
+            }
+
+        }else {
+
+            for (ComandasPagadasEntity i:list){
+                if (i.getFecha().equals(comandasPagadasDto.getFecha())){
+                    if (i.getCamarero().equals(comandasPagadasDto.getCamarero())){
+                        if (i.getMesa() == comandasPagadasDto.getMesa()){
+
+                            exit.add(entityToResponse(i));
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<Integer> mesa(List<ComandasPagadasEntity> list) {
+
+        List<Integer> exit = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++){
+
+            boolean norepeti = true;
+
+            if (i == 0){
+
+                exit.add(list.get(i).getMesa());
+
+            }else {
+
+                int largo = exit.size();
+
+                for (int j = 0; j < largo; j++){
+                    if (exit.get(j) == list.get(i).getMesa()){
+
+                        norepeti = false;
+
+                    }
+                }
+
+                if (norepeti){
+
+                    exit.add(list.get(i).getMesa());
+
+                }
+
+            }
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<String> camarero(List<ComandasPagadasEntity> list) {
+
+        List<String> exit = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++){
+
+            boolean norepeti = true;
+
+            if (i == 0){
+
+                exit.add(list.get(i).getCamarero());
+
+            }else {
+
+                int largo = exit.size();
+
+                for (int j = 0; j < largo; j++){
+                    if (exit.get(j).equals(list.get(i).getCamarero())){
+
+                        norepeti = false;
+
+                    }
+                }
+
+                if (norepeti){
+
+                    exit.add(list.get(i).getCamarero());
+
+                }
+
+            }
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public void manyDelete(ArrayList<String> id) {
+
+        for (String i:id){
+
+            delete(i);
+
+        }
 
     }
 

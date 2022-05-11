@@ -14,6 +14,7 @@ public class Html {
     String addComandas = "./comandas/addcomandas";
     String updateComanda = "./comandas/updatecomanda";
     String deleteProductosComandas = "./comandas/deleteproductocomanda";
+    String dpc = "./comandas/dpc";
     String deleteComandas = "./comandas/deletecomanda";
     String pagarComandas = "./comandas/pagarcomanda";
     String comandaPagada = "./comandas/comandapagada";

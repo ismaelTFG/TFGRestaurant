@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Añadir comandas</title>
+    <title>Eliminar producto</title>
     <link rel="shortcut icon" type="image/png" href="../../static/img/icono.png" th:href="@{img/icono.png}">
     <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
@@ -66,13 +66,13 @@
                         <div class="collapse" id="collapsecomanda" arial-labelledby="headingcomanda" data-parent="#acordioncomanda">
                             <ul class="nav nav-pills flex-column mb-auto">
                                 <li>
-                                    <a href="/addComandas" class="nav-link link-dark active bg-secondary text-light">Añadir nuevo comanda</a>
+                                    <a href="/addComandas" class="nav-link link-dark">Añadir nuevo comanda</a>
                                 </li>
                                 <li>
                                     <a href="/updateComandas" class="nav-link link-dark">Modificar y añadir productos</a>
                                 </li>
                                 <li>
-                                    <a href="/deleteProductosComanda" class="nav-link link-dark">Eliminar productos</a>
+                                    <a href="/deleteProductosComanda" class="nav-link link-dark active bg-secondary text-light">Eliminar productos</a>
                                 </li>
                                 <li>
                                     <a href="/deleteComandas" class="nav-link link-dark">Eliminar comandas</a>
@@ -116,34 +116,47 @@
         </div>
     </header>
     <main class="w-100">
-        <div class="container h-100">
-            <div class="row h-100">
+        <div class="container">
+            <div class="row">
                 <div class="col bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
                     <div class="m-auto">
-                        <h1 class="text-center m-2">Añadir comanda</h1>
-                        <form action="#" th:action="@{/addComandas}" method="post">
-                            <div class="m-2 alert alert-success" th:if="${correcto}">
-                                <h3>Correcto</h3>
-                                <p>La comanda se a creado correctamente.</p>
-                            </div>
-                            <div class="m-2 alert alert-danger" th:if="${error}">
-                                <h3>ERROR</h3>
-                                <p>
-                                    <span th:if="${nomesa}">Esta mesa ya tiene comanda</span>
-                                    <span th:if="${#fields.hasErrors('comanda.mesa')}" th:errors="*{comanda.mesa}"></span>
-                                    <span th:if="${#fields.hasErrors('comanda.camarero')}" th:errors="*{comanda.camarero}"></span>
-                                </p>
-                            </div>
-                            <div class="form-group text-center m-2">
-                                <label for="labelmesa">Mesa de la comanda</label>
-                                <input type="number" class="form-control" id="labelmesa" th:field="${comanda.mesa}">
-                            </div>
-                            <div class="form-group text-center m-2">
-                                <label for="labelcamarero">Camarero de la comanda</label>
-                                <input type="text" class="form-control" id="labelcamarero" th:field="${comanda.camarero}">
-                            </div>
+                        <h1 class="text-center m-2">Eliminar producto de comanda</h1>
+                        <form action="#" th:action="@{/deleteProductosComanda}" method="post">
+                            <input type="text" class="invisible" th:field="${comanda.mesa}">
+                            <table class="table table-striped text-center">
+                                <thead class="bg-dark text-light">
+                                    <tr>
+                                        <td>identificador</td>
+                                        <td>nombre</td>
+                                        <td>categoria</td>
+                                        <td>precio</td>
+                                        <td>seleccion</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="i, iterador : ${lista}">
+                                        <td>
+                                            <span th:text="${i.id}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${i.nombre}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${i.categoria}"></span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${i.precio}"></span>
+                                        </td>
+                                        <td>
+                                            <div class="form-check d-flex align-item-center justify-content-center">
+                                                <input type="checkbox" class="form-check-input" th:value="${iterador.index}" th:name="seleccion">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div class="text-center m-2">
-                                <button type="submit" class="btn btn-primary">Añadir Producto</button>
+                                <button type="submit" class="btn btn-primary">Eliminar producto</button>
                             </div>
                         </form>
                     </div>

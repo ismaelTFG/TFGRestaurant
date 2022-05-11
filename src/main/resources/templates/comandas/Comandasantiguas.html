@@ -2,33 +2,194 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ver comandas antiguas</title>
+    <link rel="shortcut icon" type="image/png" href="../../static/img/icono.png" th:href="@{img/icono.png}">
+    <link href="../../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
-<body>
-    <h1>Comandas pagadas</h1>
-    <table>
-        <thead>
-            <tr>
-                <td>mesa</td>
-                <td>camarero</td>
-                <td>fecha</td>
-                <td>productos</td>
-                <td>total</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="i : ${lista}">
-                <td><span th:text="${i.mesa}"></span></td>
-                <td><span th:text="${i.camarero}"></span></td>
-                <td><span th:text="${i.fecha}"></span></td>
-                <td>
-                    <ul>
-                        <li th:each="j : ${i.productos}"><span th:text="${j}"></span></li>
-                    </ul>
-                </td>
-                <td><span th:text="${i.total}"></span></td>
-            </tr>
-        </tbody>
-    </table>
+<body class="bg-dark d-flex">
+    <header>
+        <div class="d-flex flex-column flex-shrink p-3 bg-light h-100" style="width: 250px;">
+            <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
+                <p>TFGRestaurant</p>
+            </a>
+            <hr>
+            <div class="flex-column mb-auto" >
+                <div id="acordionuser" th:if="${inicio.admi}">
+                    <div class="card">
+                        <div class="card-heades" id="user">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseuser" aria-spanded="true" aria-controls="#collapseuser">Usuarios</button>
+                        </div>
+                        <div class="collapse" id="collapseuser" arial-labelledby="user" data-parent="#accordionuser">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addUser" class="nav-link link-dark">Añadir nuevo usuario</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteUser" class="nav-link link-dark">Eliminar Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="/updateUser" class="nav-link link-dark">Modificar un usuario</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionproductos">
+                    <div class="card">
+                        <div class="card-heades" id="headingproductos">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseproductos" aria-spanded="true" aria-controls="#collapseproductos">Productos</button>
+                        </div>
+                        <div class="collapse" id="collapseproductos" arial-labelledby="headingproductos" data-parent="#acordionproductos">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li th:if="${inicio.admi}">
+                                    <a href="/addProductos" class="nav-link link-dark">Añadir nuevo producto</a>
+                                </li>
+                                <li th:if="${inicio.admi}">
+                                    <a href="/deleteProductos" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/updateProductos" class="nav-link link-dark">
+                                        <span th:if="${inicio.admi}">Modificar un productos</span>
+                                        <span th:if="!${inicio.admi}">Ver productos</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordioncomanda">
+                    <div class="card">
+                        <div class="card-heades" id="headingcomanda">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapsecomanda" aria-spanded="true" aria-controls="#collapsecomanda">Comandas</button>
+                        </div>
+                        <div class="collapse" id="collapsecomanda" arial-labelledby="headingcomanda" data-parent="#acordioncomanda">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/addComandas" class="nav-link link-dark">Añadir nuevo comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/updateComandas" class="nav-link link-dark">Modificar y añadir productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteProductosComanda" class="nav-link link-dark">Eliminar productos</a>
+                                </li>
+                                <li>
+                                    <a href="/deleteComandas" class="nav-link link-dark">Eliminar comandas</a>
+                                </li>
+                                <li>
+                                    <a href="/pagarComanda" class="nav-link link-dark">Ticket de comanda</a>
+                                </li>
+                                <li>
+                                    <a href="/pagadaComanda" class="nav-link link-dark">Comanda pagada</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="acordionantiguas">
+                    <div class="card">
+                        <div class="card-heades" id="headingantiguas">
+                            <button class="btn btn-primary w-100" data-toggle="collapse" data-target="#collapseantiguas" aria-spanded="true" aria-controls="#collapseantiguas">Comandas antiguas</button>
+                        </div>
+                        <div class="collapse" id="collapseantiguas" arial-labelledby="headingantiguas" data-parent="#acordionantiguas">
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li>
+                                    <a href="/verComandasAntiguas" class="nav-link link-dark active bg-secondary text-light">Ver comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/deleteComandasAntiguas" class="nav-link link-dark">Eliminar comandas antiguas</a>
+                                </li>
+                                <li  th:if="${inicio.admi}">
+                                    <a href="/updateComandasAntiguas" class="nav-link link-dark">Modificar una comanda antigua</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <span th:text="${inicio.user}"></span>
+                <a href="/" class="btn btn-primary">cerrar sesion</a>
+            </div>
+        </div>
+    </header>
+    <main class="w-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
+                    <div class="m-auto">
+                        <h1 class="text-center m-2">Comandas antiguas</h1>
+                        <table class="table table-striped text-center">
+                            <thead class="bg-dark text-light">
+                                <tr>
+                                    <td>mesa</td>
+                                    <td>camarera</td>
+                                    <td>fecha</td>
+                                    <td>productos</td>
+                                    <td>total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="i : ${lista}">
+                                    <td>
+                                        <span th:text="${i.mesa}"></span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${i.camarero}"></span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${i.fecha}"></span>
+                                    </td>
+                                    <td>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" th:each="j : ${i.productos}">
+                                                <span th:text="${j}"></span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <span th:text="${i.total}"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-3 bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
+                    <div class="m-auto">
+                        <h1 class="text-center m-2">Filtro</h1>
+                        <form action="#" th:action="@{/filtroComandaAntiguas}" method="post">
+                            <div class="form-group text-center m-2">
+                                <label for="mesa">Mesa</label>
+                                <select class="form-control" id="mesa" th:field="${filtro.mesa}">
+                                    <option value=0></option>
+                                    <option th:each="i : ${listamesa}" th:value="${i}"><span th:text="${i}"></span></option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center m-2">
+                                <label for="camarero">camarero</label>
+                                <select class="form-control" id="camarero" th:field="${filtro.camarero}">
+                                    <option value="*"></option>
+                                    <option th:each="i : ${listacamarero}" th:value="${i}"><span th:text="${i}"></span></option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center m-2">
+                                <label for="fecha">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" th:field="${filtro.fecha}">
+                            </div>
+                            <div class="text-center m-2">
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
