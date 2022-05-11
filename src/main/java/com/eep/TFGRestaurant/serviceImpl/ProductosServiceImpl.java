@@ -173,6 +173,21 @@ public class ProductosServiceImpl implements ProductosService {
     }
 
     @Override
+    public List<ProductosResponse> listResponseToListEntity(List<ProductosEntity> list) {
+
+        List<ProductosResponse> exit = new ArrayList<>();
+
+        for (ProductosEntity i:list){
+
+            exit.add(ResponseToEntity(i));
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
     public boolean productoNoRepetido(ProductosEntity productos) {
 
         List<ProductosEntity> list = listAll();

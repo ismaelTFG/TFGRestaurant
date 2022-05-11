@@ -5,6 +5,7 @@ import com.eep.TFGRestaurant.entity.comandas.ComandasDTO;
 import com.eep.TFGRestaurant.entity.comandas.ComandasResponse;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.productos.ProductosEntity;
+import com.eep.TFGRestaurant.entity.productos.ProductosResponse;
 import com.eep.TFGRestaurant.repository.FireBase;
 import com.eep.TFGRestaurant.service.ComandasPagadasService;
 import com.eep.TFGRestaurant.service.ComandasService;
@@ -127,6 +128,14 @@ public class ComandasServiceImpl implements ComandasService {
     @Override
     public boolean update(ComandasEntity comandasEntity) {
 
+        ComandasEntity id = findByMesa(comandasEntity.getMesa());
+
+        if (comandasEntity.getCamarero().equals("")){
+
+            comandasEntity.setCamarero(id.getCamarero());
+
+        }
+
         Map<String, Object> docData = new HashMap<>();
 
         docData.put("camarero", comandasEntity.getCamarero());
@@ -209,7 +218,9 @@ public class ComandasServiceImpl implements ComandasService {
 
         }
 
-        for (int i = 0; i < add.size(); i++){
+        int largo = (add.size()) - 1;
+
+        for (int i = largo; i >= 0; i--){
             if (add.get(i).equals("")){
 
                 add.remove(i);
@@ -238,9 +249,172 @@ public class ComandasServiceImpl implements ComandasService {
     }
 
     @Override
+    public List<ComandasResponse> listEntityToListResponse(List<ComandasEntity> list) {
+
+        List<ComandasResponse> exit = new ArrayList<>();
+
+        for (ComandasEntity i:list){
+
+            exit.add(EntityToResponse(i));
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
     public ComandasPagadasEntity sinPagarToPagada(ComandasEntity comandasEntity) {
 
         return new ComandasPagadasEntity(comandasEntity.getMesa(), comandasEntity.getCamarero(), comandasEntity.getFecha(), comandasEntity.getProductos(), total(comandasEntity));
+
+    }
+
+    @Override
+    public boolean mesaNoRepetida(ComandasEntity comandasEntity) {
+
+        List<ComandasEntity> list = listAll();
+
+        for (ComandasEntity i:list){
+            if (i.getMesa() == comandasEntity.getMesa()){
+
+                return true;
+
+            }
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public List<ProductosResponse> productos(ComandasEntity comandasEntity) {
+
+        List<ProductosResponse> exit = new ArrayList<>();
+        List<ProductosEntity> list = productosService.listAll();
+
+        for (String j:comandasEntity.getProductos()){
+            for (ProductosEntity i:list){
+                if (i.getId().equals(j)){
+
+                    exit.add(productosService.ResponseToEntity(i));
+
+                }
+            }
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<Integer> mesa(List<ComandasEntity> list) {
+
+        List<Integer> exit = new ArrayList<>();
+
+        for (ComandasEntity i:list){
+
+            exit.add(i.getMesa());
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<String> camarero(List<ComandasEntity> list) {
+
+        List<String> exit = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++){
+
+            boolean norepeti = true;
+
+            if (i == 0){
+
+                exit.add(list.get(i).getCamarero());
+
+            }else {
+
+                int largo = exit.size();
+
+                for (int j = 0; j < largo; j++){
+                    if (exit.get(j).equals(list.get(i).getCamarero())){
+
+                        norepeti = false;
+
+                    }
+                }
+
+                if (norepeti){
+
+                    exit.add(list.get(i).getCamarero());
+
+                }
+
+            }
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public List<ComandasResponse> filtro(ComandasEntity comandasEntity) {
+
+        List<ComandasResponse> exit = new ArrayList<>();
+        List<ComandasEntity> list = listAll();
+
+        if (comandasEntity.getMesa() == 0){
+            if (!comandasEntity.getCamarero().equals("*")){
+
+                for (ComandasEntity i:list){
+                    if (i.getCamarero().equals(comandasEntity.getCamarero())){
+
+                        exit.add(EntityToResponse(i));
+
+                    }
+                }
+
+            }
+        }else if (comandasEntity.getCamarero().equals("*")){
+
+            for (ComandasEntity i:list){
+                if (i.getMesa() == comandasEntity.getMesa()){
+
+                    exit.add(EntityToResponse(i));
+
+                }
+            }
+
+        }else {
+
+            for (ComandasEntity i:list){
+                if (i.getCamarero().equals(comandasEntity.getCamarero())){
+                    if (i.getMesa() == comandasEntity.getMesa()){
+
+                        exit.add(EntityToResponse(i));
+
+                    }
+                }
+            }
+
+        }
+
+        return exit;
+
+    }
+
+    @Override
+    public void manyDelete(ArrayList<Integer> mesa) {
+
+        for (int i:mesa){
+
+            delete(i);
+
+        }
 
     }
 

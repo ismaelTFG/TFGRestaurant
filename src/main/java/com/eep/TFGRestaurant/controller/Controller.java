@@ -184,7 +184,7 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.updateUser);
 
         mav.addObject("user", new UserDto());
-        mav.addObject("lista", userService.listAllSinUser(user));
+        mav.addObject("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
         mav.addObject("correcto", false);
         mav.addObject("error", false);
         mav.addObject("inicio", user);
@@ -199,7 +199,7 @@ public class Controller {
         if (result.hasErrors()){
 
             model.addAttribute("user", userDto);
-            model.addAttribute("lista", userService.listAllSinUser(user));
+            model.addAttribute("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
             model.addAttribute("correcto", false);
             model.addAttribute("error", true);
             model.addAttribute("inicio", user);
@@ -209,7 +209,7 @@ public class Controller {
             userService.update(userService.DtoToEntity(userDto));
 
             model.addAttribute("user", new UserDto());
-            model.addAttribute("lista", userService.listAllSinUser(user));
+            model.addAttribute("lista", userService.listEntityToListRespnse(userService.listAllSinUser(user)));
             model.addAttribute("correcto", true);
             model.addAttribute("error", false);
             model.addAttribute("inicio", user);
@@ -275,7 +275,7 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.deleteProductos);
 
-        mav.addObject("lista", productosService.listAll());
+        mav.addObject("lista", productosService.listResponseToListEntity(productosService.listAll()));
         mav.addObject("inicio", user);
         mav.addObject("correcto", false);
         mav.addObject("error", false);
@@ -289,14 +289,14 @@ public class Controller {
 
         if (productosService.manyDelete(id)){
 
-            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("lista", productosService.listResponseToListEntity(productosService.listAll()));
             model.addAttribute("inicio", user);
             model.addAttribute("correcto", true);
             model.addAttribute("error", false);
 
         }else {
 
-            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("lista", productosService.listResponseToListEntity(productosService.listAll()));
             model.addAttribute("inicio", user);
             model.addAttribute("correcto", false);
             model.addAttribute("error", true);
@@ -310,7 +310,7 @@ public class Controller {
     @PostMapping("/busquedaproductodelete")
     public String busquedaproducto(@RequestParam(value = "categoria") String categoria, Model model){
 
-        model.addAttribute("lista", productosService.busquedacategoria(categoria));
+        model.addAttribute("lista", productosService.listResponseToListEntity(productosService.busquedacategoria(categoria)));
         model.addAttribute("inicio", user);
         model.addAttribute("correcto", false);
         model.addAttribute("error", false);
@@ -324,7 +324,7 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.updateProductos);
 
-        mav.addObject("lista", productosService.listAll());
+        mav.addObject("lista", productosService.listResponseToListEntity(productosService.listAll()));
         mav.addObject("inicio", user);
 
         return mav;
@@ -334,7 +334,7 @@ public class Controller {
     @PostMapping("/busquedaproducto")
     public String busquedaproductover(@RequestParam(value = "categoria") String categoria, Model model){
 
-        model.addAttribute("lista", productosService.busquedacategoria(categoria));
+        model.addAttribute("lista", productosService.listResponseToListEntity(productosService.busquedacategoria(categoria)));
         model.addAttribute("inicio", user);
         model.addAttribute("correcto", false);
         model.addAttribute("error", false);
@@ -360,7 +360,7 @@ public class Controller {
 
         if (result.hasErrors()){
 
-            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("lista", productosService.listResponseToListEntity(productosService.listAll()));
             model.addAttribute("inicio", user);
             model.addAttribute("correcto", false);
             model.addAttribute("error", true);
@@ -371,7 +371,7 @@ public class Controller {
 
             productosService.update(productosService.DtoToEntity(productosDto));
 
-            model.addAttribute("lista", productosService.listAll());
+            model.addAttribute("lista", productosService.listResponseToListEntity(productosService.listAll()));
             model.addAttribute("inicio", user);
             model.addAttribute("correcto", true);
             model.addAttribute("error", false);
@@ -388,17 +388,47 @@ public class Controller {
         ModelAndView mav = new ModelAndView(html.addComandas);
 
         mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
+        mav.addObject("error", false);
+        mav.addObject("nomesa", false);
 
         return mav;
 
     }
 
     @PostMapping("/addComandas")
-    public String anyadirComandas(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+    public String anyadirComandas(@Valid @ModelAttribute("comanda") ComandasDTO comandasDTO, BindingResult result, Model model){
 
-        comandasService.add(comandasService.DtoToEntity(comandasDTO));
+        if (result.hasErrors()){
 
-        return html.inicio;
+            model.addAttribute("comanda", comandasDTO);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("nomesa", false);
+
+        }else if (comandasService.mesaNoRepetida(comandasService.DtoToEntity(comandasDTO))){
+
+            model.addAttribute("comanda", comandasDTO);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", false);
+            model.addAttribute("error", true);
+            model.addAttribute("nomesa", true);
+
+        }else {
+
+            comandasService.add(comandasService.DtoToEntity(comandasDTO));
+
+            model.addAttribute("comanda", comandasDTO);
+            model.addAttribute("inicio", user);
+            model.addAttribute("correcto", true);
+            model.addAttribute("error", false);
+            model.addAttribute("nomesa", false);
+
+        }
+
+        return html.addComandas;
 
     }
 
@@ -407,20 +437,28 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.updateComanda);
 
-        mav.addObject("listacomandas", comandasService.listAll());
+        mav.addObject("listacomandas", comandasService.listEntityToListResponse(comandasService.listAll()));
         mav.addObject("comanda", new ComandasDTO());
-        mav.addObject("lista", productosService.listAll());
+        mav.addObject("lista", productosService.listResponseToListEntity(productosService.listAll()));
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
 
         return mav;
 
     }
 
     @PostMapping("/updateComanda")
-    public String modificarComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<String> seleccionados){
+    public String modificarComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<String> seleccionados, Model model){
 
         comandasService.addProductos(comandasDTO, seleccionados);
 
-        return html.inicio;
+        model.addAttribute("listacomandas", comandasService.listEntityToListResponse(comandasService.listAll()));
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("lista", productosService.listResponseToListEntity(productosService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", true);
+
+        return html.updateComanda;
 
     }
 
@@ -429,19 +467,37 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.deleteProductosComandas);
 
-        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
         mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
 
         return mav;
 
     }
 
+    @PostMapping("/buscarComanda")
+    public String buscarComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, Model model){
+
+        model.addAttribute("comanda", comandasDTO);
+        model.addAttribute("lista", comandasService.productos(comandasService.findByMesa(comandasDTO.getMesa())));
+        model.addAttribute("inicio", user);
+
+        return html.dpc;
+
+    }
+
     @PostMapping("/deleteProductosComanda")
-    public String eliminarProductosComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<Integer> seleccionados){
+    public String eliminarProductosComanda(@ModelAttribute("comanda") ComandasDTO comandasDTO, @RequestParam(value = "seleccion") ArrayList<Integer> seleccionados, Model model){
 
         comandasService.deleteProductos(comandasDTO, seleccionados);
 
-        return html.inicio;
+        model.addAttribute("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", true);
+
+        return html.deleteProductosComandas;
 
     }
 
@@ -450,19 +506,44 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.deleteComandas);
 
-        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
         mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("listamesa", comandasService.mesa(comandasService.listAll()));
+        mav.addObject("listacamarero", comandasService.camarero(comandasService.listAll()));
 
         return mav;
 
     }
 
+    @PostMapping("/filtroComandaDelete")
+    public String filtroComandaDelete(@ModelAttribute("comanda") ComandasDTO comandasDTO, Model model){
+
+        model.addAttribute("lista", comandasService.filtro(comandasService.DtoToEntity(comandasDTO)));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", false);
+        model.addAttribute("comanda", comandasDTO);
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.deleteComandas;
+
+    }
+
     @PostMapping("/deleteComandas")
-    public String eliminarComandas(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+    public String eliminarComandas(@RequestParam("seleccion") ArrayList<Integer> mesa, Model model){
 
-        comandasService.delete(comandasDTO.getMesa());
+        comandasService.manyDelete(mesa);
 
-        return html.inicio;
+        model.addAttribute("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", true);
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.deleteComandas;
 
     }
 
@@ -471,19 +552,47 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.pagarComandas);
 
-        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
         mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("filtro", new ComandasDTO());
+        mav.addObject("listamesa", comandasService.mesa(comandasService.listAll()));
+        mav.addObject("listacamarero", comandasService.camarero(comandasService.listAll()));
 
         return mav;
 
     }
 
+    @PostMapping("/filtroComandaTicket")
+    public String filtroComandaTicket(@ModelAttribute("filtro") ComandasDTO comandasDTO, Model model){
+
+        model.addAttribute("lista", comandasService.filtro(comandasService.DtoToEntity(comandasDTO)));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", false);
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("filtro", comandasDTO);
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.pagarComandas;
+
+    }
+
     @PostMapping("/pagarComanda")
-    public String ticket(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+    public String ticket(@ModelAttribute("comanda") ComandasDTO comandasDTO, Model model){
 
         comandasService.pagar(comandasService.findByMesa(comandasDTO.getMesa()));
 
-        return html.inicio;
+        model.addAttribute("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", true);
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("filtro", new ComandasDTO());
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.pagarComandas;
 
     }
 
@@ -492,19 +601,47 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.comandaPagada);
 
-        mav.addObject("lista", comandasService.listAll());
+        mav.addObject("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        mav.addObject("inicio", user);
+        mav.addObject("correcto", false);
         mav.addObject("comanda", new ComandasDTO());
+        mav.addObject("filtro", new ComandasDTO());
+        mav.addObject("listamesa", comandasService.mesa(comandasService.listAll()));
+        mav.addObject("listacamarero", comandasService.camarero(comandasService.listAll()));
 
         return mav;
 
     }
 
+    @PostMapping("/filtroComandaPagada")
+    public String filtroComandaPagada(@ModelAttribute("filtro") ComandasDTO comandasDTO, Model model){
+
+        model.addAttribute("lista", comandasService.filtro(comandasService.DtoToEntity(comandasDTO)));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", false);
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("filtro", comandasDTO);
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.comandaPagada;
+
+    }
+
     @PostMapping("/pagadaComanda")
-    public String addComandaPagada(@ModelAttribute("comanda") ComandasDTO comandasDTO){
+    public String addComandaPagada(@ModelAttribute("comanda") ComandasDTO comandasDTO, Model model){
 
         comandasService.pagada(comandasService.findByMesa(comandasDTO.getMesa()));
 
-        return html.inicio;
+        model.addAttribute("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("correcto", true);
+        model.addAttribute("comanda", new ComandasDTO());
+        model.addAttribute("filtro", new ComandasDTO());
+        model.addAttribute("listamesa", comandasService.mesa(comandasService.listAll()));
+        model.addAttribute("listacamarero", comandasService.camarero(comandasService.listAll()));
+
+        return html.comandaPagada;
 
     }
 
@@ -513,9 +650,26 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.ComandasAntiguas);
 
-        mav.addObject("lista", comandasPagadasService.listAll());
+        mav.addObject("lista", comandasPagadasService.listEntityToListResponse(comandasPagadasService.listAll()));
+        mav.addObject("inicio", user);
+        mav.addObject("filtro", new ComandasPagadasDto());
+        mav.addObject("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        mav.addObject("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
 
         return mav;
+
+    }
+
+    @PostMapping("/filtroComandaAntiguas")
+    public String filtroComandaAntiguas(@ModelAttribute("filtro") ComandasPagadasDto comandasPagadasDto, Model model){
+
+        model.addAttribute("lista", comandasPagadasService.filtro(comandasPagadasDto));
+        model.addAttribute("inicio", user);
+        model.addAttribute("filtro", new ComandasPagadasDto());
+        model.addAttribute("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        model.addAttribute("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+
+        return html.ComandasAntiguas;
 
     }
 
@@ -524,19 +678,44 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.deleteComandasAntiguas);
 
-        mav.addObject("lista", comandasPagadasService.listAll());
-        mav.addObject("comanda", new ComandasPagadasDto());
+        mav.addObject("lista", comandasPagadasService.listEntityToListResponse(comandasPagadasService.listAll()));
+        mav.addObject("filtro", new ComandasPagadasDto());
+        mav.addObject("inicio", user);
+        mav.addObject("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        mav.addObject("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        mav.addObject("correcto", false);
 
         return mav;
 
     }
 
+    @PostMapping("/filtroComandaAntiguasDelete")
+    public String filtroComandaAntiguasDelete(@ModelAttribute("filtro") ComandasPagadasDto comandasPagadasDto, Model model){
+
+        model.addAttribute("lista", comandasPagadasService.filtro(comandasPagadasDto));
+        model.addAttribute("inicio", user);
+        model.addAttribute("filtro", new ComandasPagadasDto());
+        model.addAttribute("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        model.addAttribute("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        model.addAttribute("correcto", false);
+
+        return html.deleteComandasAntiguas;
+
+    }
+
     @PostMapping("/deleteComandasAntiguas")
-    public String eliminarComandasAntiguas(@ModelAttribute("comanda") ComandasPagadasDto comandasPagadasDto){
+    public String eliminarComandasAntiguas(@RequestParam(value = "seleccion") ArrayList<String> id, Model model){
 
-        comandasPagadasService.delete(comandasPagadasDto.getId());
+        comandasPagadasService.manyDelete(id);
 
-        return html.inicio;
+        model.addAttribute("lista", comandasPagadasService.listEntityToListResponse(comandasPagadasService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("filtro", new ComandasPagadasDto());
+        model.addAttribute("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        model.addAttribute("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        model.addAttribute("correcto", true);
+
+        return html.deleteComandasAntiguas;
 
     }
 
@@ -545,22 +724,50 @@ public class Controller {
 
         ModelAndView mav = new ModelAndView(html.updateComandasAntiguas);
 
-        mav.addObject("lista", comandasPagadasService.listAll());
+        mav.addObject("lista", comandasPagadasService.listEntityToListResponse(comandasPagadasService.listAll()));
         mav.addObject("comanda", new ComandasPagadasDto());
+        mav.addObject("filtro", new ComandasPagadasDto());
+        mav.addObject("inicio", user);
+        mav.addObject("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        mav.addObject("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        mav.addObject("correcto", false);
 
         return mav;
 
     }
 
+    @PostMapping("/filtroComandaAntiguasUpdate")
+    public String filtroComandaAntiguasUpdate(@ModelAttribute("filtro") ComandasPagadasDto comandasPagadasDto, Model model){
+
+        model.addAttribute("lista", comandasPagadasService.filtro(comandasPagadasDto));
+        model.addAttribute("inicio", user);
+        model.addAttribute("filtro", new ComandasPagadasDto());
+        model.addAttribute("comanda", new ComandasPagadasDto());
+        model.addAttribute("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        model.addAttribute("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        model.addAttribute("correcto", false);
+
+        return html.updateComandasAntiguas;
+
+    }
+
     @PostMapping("/updateComandasAntiguas")
-    public String modificarComandaAntiguas(@ModelAttribute("comanda") ComandasPagadasDto comandasPagadasDto){
+    public String modificarComandaAntiguas(@ModelAttribute("comanda") ComandasPagadasDto comandasPagadasDto, Model model){
 
         ComandasPagadasEntity comandasPagadasEntity = comandasPagadasService.findById(comandasPagadasDto.getId());
 
         comandasPagadasEntity.setCamarero(comandasPagadasDto.getCamarero());
         comandasPagadasService.update(comandasPagadasEntity);
 
-        return html.inicio;
+        model.addAttribute("lista", comandasPagadasService.listEntityToListResponse(comandasPagadasService.listAll()));
+        model.addAttribute("inicio", user);
+        model.addAttribute("filtro", new ComandasPagadasDto());
+        model.addAttribute("comanda", new ComandasPagadasDto());
+        model.addAttribute("listamesa", comandasPagadasService.mesa(comandasPagadasService.listAll()));
+        model.addAttribute("listacamarero", comandasPagadasService.camarero(comandasPagadasService.listAll()));
+        model.addAttribute("correcto", true);
+
+        return html.updateComandasAntiguas;
 
     }
 

@@ -17,6 +17,7 @@ public interface ProductosService {
 
     public abstract ProductosEntity DtoToEntity(ProductosDto productos);
     public abstract ProductosResponse ResponseToEntity(ProductosEntity productos);
+    public abstract List<ProductosResponse> listResponseToListEntity(List<ProductosEntity> list);
 
     public abstract boolean productoNoRepetido(ProductosEntity productos);
     public abstract List<ProductosEntity> busquedacategoria(String categoria);
