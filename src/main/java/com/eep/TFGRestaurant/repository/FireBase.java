@@ -11,9 +11,14 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 
+//repositorio para la conexion con la base de datos de firebase
 @Repository("fireBase")
 public class FireBase {
 
+    /**
+     * conexion con la base de datos
+     * @throws IOException excepcion por si no conecta con la base de datos
+     */
     @PostConstruct
     private void initFireStore() throws IOException {
 
@@ -28,6 +33,10 @@ public class FireBase {
 
     }
 
+    /**
+     * metodo para el llamado de la base de datos
+     * @return base de datos
+     */
     public Firestore getFirestore(){
 
         return FirestoreClient.getFirestore();

@@ -1,6 +1,5 @@
 package com.eep.TFGRestaurant.serviceImpl;
 
-import com.eep.TFGRestaurant.entity.comandas.ComandasEntity;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasDto;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasEntity;
 import com.eep.TFGRestaurant.entity.comandaspagadas.ComandasPagadasResponse;
@@ -25,10 +24,15 @@ import java.util.concurrent.ExecutionException;
 @Service("comandasPagadasServiceImpl")
 public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
+    //conexion con la base de datos
     @Autowired
     @Qualifier("fireBase")
     private FireBase fireBase;
 
+    /**
+     * lista de todas las comandas pagadas
+     * @return lista
+     */
     @Override
     public List<ComandasPagadasEntity> listAll() {
 
@@ -59,6 +63,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * añadir comanda antigua
+     * @param comandasPagadasEntity comanda
+     * @return si se guardo o no
+     */
     @Override
     public boolean add(ComandasPagadasEntity comandasPagadasEntity) {
 
@@ -91,6 +100,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * modificacion de comanda antigua
+     * @param comandasPagadasEntity comanda
+     * @return si se modifica o no
+     */
     @Override
     public boolean update(ComandasPagadasEntity comandasPagadasEntity) {
 
@@ -122,6 +136,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
         return false;
     }
 
+    /**
+     * eliminacion de comanda antigua
+     * @param id id de la comanda a eliminar
+     * @return si se elimina o no
+     */
     @Override
     public boolean delete(String id) {
 
@@ -145,6 +164,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
         return false;
     }
 
+    /**
+     * busqueda de una comanda por id
+     * @param id id a buscar
+     * @return comanda
+     */
     @Override
     public ComandasPagadasEntity findById(String id) {
 
@@ -162,6 +186,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * casteo de un dto a un entity
+     * @param comandasPagadasDto comanda en dto
+     * @return comanda en entity
+     */
     @Override
     public ComandasPagadasEntity dtoToEntity(ComandasPagadasDto comandasPagadasDto) {
 
@@ -169,6 +198,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * casteo de un entity a un response
+     * @param comandasPagadasEntity comanda en entity
+     * @return comanda en response
+     */
     @Override
     public ComandasPagadasResponse entityToResponse(ComandasPagadasEntity comandasPagadasEntity) {
 
@@ -176,6 +210,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * casteo de lista
+     * @param list lista a castear
+     * @return lista casteada
+     */
     @Override
     public List<ComandasPagadasResponse> listEntityToListResponse(List<ComandasPagadasEntity> list) {
 
@@ -191,6 +230,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * busqueda de comandas
+     * @param comandasPagadasDto parametros a buscar
+     * @return lista
+     */
     @Override
     public List<ComandasPagadasResponse> filtro(ComandasPagadasDto comandasPagadasDto) {
 
@@ -297,6 +341,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * lista de las mesas que existen en comandas antiguas
+     * @param list de comandas antiguas
+     * @return lista
+     */
     @Override
     public List<Integer> mesa(List<ComandasPagadasEntity> list) {
 
@@ -336,6 +385,11 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * lista de camarero de las comandas antiguas
+     * @param list de comandas antiguas
+     * @return lista
+     */
     @Override
     public List<String> camarero(List<ComandasPagadasEntity> list) {
 
@@ -375,6 +429,10 @@ public class ComandasPagadasServiceImpl implements ComandasPagadasService {
 
     }
 
+    /**
+     * eliminar varias comandas antiguas
+     * @param id de las comandas
+     */
     @Override
     public void manyDelete(ArrayList<String> id) {
 

@@ -24,10 +24,15 @@ import java.util.concurrent.ExecutionException;
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService {
 
+    //conexion a base de datos
     @Autowired
     @Qualifier("fireBase")
     private FireBase fireBase;
 
+    /**
+     * lista de todos los usuarios
+     * @return lista
+     */
     @Override
     public List<UserEntity> listAll() {
 
@@ -58,6 +63,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * añadir usuario
+     * @param userEntity usuario a añadir
+     * @return si se guarda o no
+     */
     @Override
     public boolean add(UserEntity userEntity) {
 
@@ -87,6 +97,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * eliminar usuario
+     * @param id del usuario a eliminar
+     * @return si se elimina o no
+     */
     @Override
     public boolean delete(String id) {
 
@@ -111,6 +126,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * modificar usuario
+     * @param userEntity usuario a modificar
+     * @return si se modifica o no
+     */
     @Override
     public boolean update(UserEntity userEntity) {
 
@@ -139,6 +159,11 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    /**
+     * lista de todos los usuarios sin contar con el que inicias
+     * @param userResponse usuario iniciado
+     * @return lista
+     */
     @Override
     public List<UserEntity> listAllSinUser(UserResponse userResponse) {
 
@@ -155,6 +180,11 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
+    /**
+     * busqueda de usuario
+     * @param user nombre del usuario
+     * @return usuario
+     */
     @Override
     public UserEntity findByUser(String user) {
 
@@ -171,6 +201,11 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * casteo de dto a entity
+     * @param userDto usuario dto
+     * @return usuario entity
+     */
     @Override
     public UserEntity DtoToEntity(UserDto userDto) {
 
@@ -178,6 +213,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * casteo de entity a response
+     * @param userEntity usuario entity
+     * @return usuario response
+     */
     @Override
     public UserResponse entityToResponse(UserEntity userEntity) {
 
@@ -185,6 +225,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * casteo de lista entity a lista response
+     * @param list entity
+     * @return lista response
+     */
     @Override
     public List<UserResponse> listEntityToListRespnse(List<UserEntity> list) {
 
@@ -200,6 +245,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * metodo que compruenba que el usuario no exista ya
+     * @param userEntity usuario a comprobar
+     * @return si existe o no
+     */
     @Override
     public boolean userNoRepetidos(UserEntity userEntity) {
 
@@ -217,6 +267,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * validar usuario para el login
+     * @param userEntity usuario para iniciar
+     * @return si puede iniciar o no
+     */
     @Override
     public boolean validar(UserEntity userEntity) {
 
@@ -236,6 +291,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * borrar varios usuario
+     * @param id de los usuarios
+     * @return si los borro o no
+     */
     @Override
     public boolean manyDelete(ArrayList<String> id) {
 
