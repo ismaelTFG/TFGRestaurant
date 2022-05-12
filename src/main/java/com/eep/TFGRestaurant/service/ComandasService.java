@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ComandasService {
 
+    //metodos que conecta con la base de datos
     public abstract List<ComandasEntity> listAll();
     public abstract boolean add(ComandasEntity comandasEntity);
     public abstract boolean delete(int id);
@@ -19,12 +20,13 @@ public interface ComandasService {
     public abstract boolean addProductos(ComandasDTO comandasDTO, ArrayList<String> seleccionados);
     public abstract boolean deleteProductos(ComandasDTO comandasDTO, ArrayList<Integer> seleccionados);
 
-
+    //metodos de casteo
     public abstract ComandasEntity DtoToEntity(ComandasDTO comandasDto);
     public abstract ComandasResponse EntityToResponse(ComandasEntity comandasEntity);
     public abstract List<ComandasResponse> listEntityToListResponse(List<ComandasEntity> list);
     public abstract ComandasPagadasEntity sinPagarToPagada(ComandasEntity comandasEntity);
 
+    //metodos de logica extra
     public abstract boolean mesaNoRepetida(ComandasEntity comandasEntity);
     public abstract List<ProductosResponse> productos(ComandasEntity comandasEntity);
     public abstract List<Integer> mesa(List<ComandasEntity> list);

@@ -30,18 +30,25 @@ import java.util.concurrent.ExecutionException;
 @Service("comandasServiceImpl")
 public class ComandasServiceImpl implements ComandasService {
 
+    //conexion con la base de datos
     @Autowired
     @Qualifier("fireBase")
     private FireBase fireBase;
 
+    //servicio de productos
     @Autowired
     @Qualifier("productosServiceImpl")
     private ProductosService productosService;
 
+    //servicio de comandas pagadas
     @Autowired
     @Qualifier("comandasPagadasServiceImpl")
     private ComandasPagadasService comandasPagadasService;
 
+    /**
+     * lista de todas las comandas
+     * @return lista
+     */
     @Override
     public List<ComandasEntity> listAll() {
 
@@ -72,6 +79,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * añadir comanda
+     * @param comandasEntity comanda
+     * @return si se guarda o no
+     */
     @Override
     public boolean add(ComandasEntity comandasEntity) {
 
@@ -101,6 +113,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * borrado de comanda
+     * @param id de la comanda a borrar
+     * @return si se borrar a no
+     */
     @Override
     public boolean delete(int id) {
 
@@ -125,6 +142,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * modificacion de comanda
+     * @param comandasEntity comanda a modificar
+     * @return si se modifica o no
+     */
     @Override
     public boolean update(ComandasEntity comandasEntity) {
 
@@ -163,6 +185,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * buscar comanda por mesa
+     * @param mesa a buscar
+     * @return comanda
+     */
     @Override
     public ComandasEntity findByMesa(int mesa) {
 
@@ -179,6 +206,12 @@ public class ComandasServiceImpl implements ComandasService {
         return null;
     }
 
+    /**
+     * añadir producto a comanda
+     * @param comandasDTO comanda
+     * @param seleccionados productos a añadir
+     * @return si se añaden o no
+     */
     @Override
     public boolean addProductos(ComandasDTO comandasDTO, ArrayList<String> seleccionados) {
 
@@ -204,6 +237,12 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * eliminacion de producto a comanda
+     * @param comandasDTO comanda
+     * @param seleccionados productos a eliminar
+     * @return si se borran o no
+     */
     @Override
     public boolean deleteProductos(ComandasDTO comandasDTO, ArrayList<Integer> seleccionados) {
 
@@ -234,6 +273,11 @@ public class ComandasServiceImpl implements ComandasService {
         return false;
     }
 
+    /**
+     * casteo de dto a entity
+     * @param comandasDto comanda en dto
+     * @return comanda en entity
+     */
     @Override
     public ComandasEntity DtoToEntity(ComandasDTO comandasDto) {
 
@@ -241,6 +285,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * casteo de entity a response
+     * @param comandasEntity comanda entity
+     * @return comanda response
+     */
     @Override
     public ComandasResponse EntityToResponse(ComandasEntity comandasEntity) {
 
@@ -248,6 +297,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * lista entity a lista response
+     * @param list entity
+     * @return lista response
+     */
     @Override
     public List<ComandasResponse> listEntityToListResponse(List<ComandasEntity> list) {
 
@@ -263,6 +317,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * paso de comanda sin pagar a comanda pagada
+     * @param comandasEntity comanda sin pagar
+     * @return comanda pagada
+     */
     @Override
     public ComandasPagadasEntity sinPagarToPagada(ComandasEntity comandasEntity) {
 
@@ -270,6 +329,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * comprobacion de las mesas
+     * @param comandasEntity comanda
+     * @return si esta repetida o no
+     */
     @Override
     public boolean mesaNoRepetida(ComandasEntity comandasEntity) {
 
@@ -287,6 +351,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * lista de productos en una comandas
+     * @param comandasEntity comanda
+     * @return lista de productos
+     */
     @Override
     public List<ProductosResponse> productos(ComandasEntity comandasEntity) {
 
@@ -307,6 +376,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * lista de las mesas en las comandas
+     * @param list de comandas
+     * @return lista de mesas
+     */
     @Override
     public List<Integer> mesa(List<ComandasEntity> list) {
 
@@ -322,6 +396,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * lista de camareros en las comandas
+     * @param list de comandas
+     * @return lista de camareros
+     */
     @Override
     public List<String> camarero(List<ComandasEntity> list) {
 
@@ -361,6 +440,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * busqueda de comandas
+     * @param comandasEntity parametros de busqueda
+     * @return lista de comandas
+     */
     @Override
     public List<ComandasResponse> filtro(ComandasEntity comandasEntity) {
 
@@ -407,6 +491,10 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * borrado de varias comandas
+     * @param mesa lista de comandas
+     */
     @Override
     public void manyDelete(ArrayList<Integer> mesa) {
 
@@ -418,6 +506,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * calculo del total de la comanda
+     * @param comandasEntity comanda
+     * @return total
+     */
     @Override
     public double total(ComandasEntity comandasEntity) {
 
@@ -438,6 +531,11 @@ public class ComandasServiceImpl implements ComandasService {
 
     }
 
+    /**
+     * generacion del ticket de una comanda Y imprimir esta
+     * @param comandasEntity comanda
+     * @return si se genero o no
+     */
     @Override
     public boolean pagar(ComandasEntity comandasEntity) {
 
@@ -478,6 +576,11 @@ public class ComandasServiceImpl implements ComandasService {
         return false;
     }
 
+    /**
+     * metodo que cambia la comanda de no pagada a pagada
+     * @param comandasEntity comanda
+     * @return si se guarda o no
+     */
     @Override
     public boolean pagada(ComandasEntity comandasEntity) {
 

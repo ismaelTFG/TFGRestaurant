@@ -23,10 +23,15 @@ import java.util.concurrent.ExecutionException;
 @Service("productosServiceImpl")
 public class ProductosServiceImpl implements ProductosService {
 
+    //conexion con la base de datos
     @Autowired
     @Qualifier("fireBase")
     private FireBase fireBase;
 
+    /**
+     * lista de todos los productos
+     * @return lista
+     */
     @Override
     public List<ProductosEntity> listAll() {
 
@@ -57,6 +62,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * anadir producto
+     * @param productos producto
+     * @return si se guarda o no
+     */
     @Override
     public boolean add(ProductosEntity productos) {
 
@@ -87,6 +97,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * eliminar producto
+     * @param id del producto a eliminar
+     * @return si se elimina o no
+     */
     @Override
     public boolean delete(String id) {
 
@@ -111,6 +126,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * modificacion producto
+     * @param productos a modificar
+     * @return si se modifica o no
+     */
     @Override
     public boolean update(ProductosEntity productos) {
 
@@ -141,6 +161,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * busqueda por id
+     * @param id del producto
+     * @return producto
+     */
     @Override
     public ProductosEntity findById(String id) {
 
@@ -158,6 +183,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * casteo de dto a entity
+     * @param productos produto dto
+     * @return producto entity
+     */
     @Override
     public ProductosEntity DtoToEntity(ProductosDto productos) {
 
@@ -165,6 +195,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * casteo de entity a response
+     * @param productos producto entity
+     * @return producto response
+     */
     @Override
     public ProductosResponse ResponseToEntity(ProductosEntity productos) {
 
@@ -172,6 +207,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * casteo de lista entity a lista response
+     * @param list entity
+     * @return lista response
+     */
     @Override
     public List<ProductosResponse> listResponseToListEntity(List<ProductosEntity> list) {
 
@@ -187,6 +227,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * metodo que comprueba que el producto no exista ya
+     * @param productos producto
+     * @return si existe o no
+     */
     @Override
     public boolean productoNoRepetido(ProductosEntity productos) {
 
@@ -204,6 +249,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * busqueda de los productos por la categoria
+     * @param categoria filtro
+     * @return lista de productos
+     */
     @Override
     public List<ProductosEntity> busquedacategoria(String categoria) {
 
@@ -222,6 +272,11 @@ public class ProductosServiceImpl implements ProductosService {
 
     }
 
+    /**
+     * eliminar vario productos
+     * @param id de los productos
+     * @return si se elimina o no
+     */
     @Override
     public boolean manyDelete(ArrayList<String> id) {
 

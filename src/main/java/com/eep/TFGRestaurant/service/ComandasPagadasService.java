@@ -9,16 +9,19 @@ import java.util.List;
 
 public interface ComandasPagadasService {
 
+    //metodos que conecta con la base de datos
     public abstract List<ComandasPagadasEntity> listAll();
     public abstract boolean add(ComandasPagadasEntity comandasPagadasEntity);
     public abstract boolean update(ComandasPagadasEntity comandasPagadasEntity);
     public abstract boolean delete(String id);
     public abstract ComandasPagadasEntity findById(String id);
 
+    //metodos de casteo
     public abstract ComandasPagadasEntity dtoToEntity(ComandasPagadasDto comandasPagadasDto);
     public abstract ComandasPagadasResponse entityToResponse(ComandasPagadasEntity comandasPagadasEntity);
     public abstract List<ComandasPagadasResponse> listEntityToListResponse(List<ComandasPagadasEntity> list);
 
+    //metodos de logica extra
     public abstract List<ComandasPagadasResponse> filtro(ComandasPagadasDto comandasPagadasDto);
     public abstract List<Integer> mesa(List<ComandasPagadasEntity> list);
     public abstract List<String> camarero(List<ComandasPagadasEntity> list);
