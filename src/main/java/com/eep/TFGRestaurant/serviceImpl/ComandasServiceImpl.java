@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.print.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -151,6 +152,12 @@ public class ComandasServiceImpl implements ComandasService {
     public boolean update(ComandasEntity comandasEntity) {
 
         ComandasEntity id = findByMesa(comandasEntity.getMesa());
+
+        if(comandasEntity.getCamarero() == null){
+
+            comandasEntity.setCamarero(id.getCamarero());
+
+        }
 
         if (comandasEntity.getCamarero().equals("")){
 
@@ -519,7 +526,7 @@ public class ComandasServiceImpl implements ComandasService {
 
         for (String i : comandasEntity.getProductos()){
             for (ProductosEntity j : list){
-                if (j.getNombre().equals(i)){
+                if (j.getId().equals(i)){
 
                     exit = exit + j.getPrecio();
 
@@ -586,6 +593,27 @@ public class ComandasServiceImpl implements ComandasService {
 
         comandasPagadasService.add(sinPagarToPagada(comandasEntity));
         delete(comandasEntity.getMesa());
+
+        return false;
+
+    }
+
+    /**
+     * metodo que imprime el ticket
+     */
+    @Override
+    public void imprimir() {
+
+        
+
+    }
+
+    /**
+     * metodo para cambiar el encabezado
+     * @return si se ha cambiado
+     */
+    @Override
+    public boolean cambiarEncabezado() {
 
         return false;
 

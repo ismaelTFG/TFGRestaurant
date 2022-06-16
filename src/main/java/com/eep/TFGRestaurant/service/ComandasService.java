@@ -36,5 +36,7 @@ public interface ComandasService {
     public abstract double total(ComandasEntity comandasEntity);
     public abstract boolean pagar(ComandasEntity comandasEntity);
     public abstract boolean pagada(ComandasEntity comandasEntity);
+    public abstract void imprimir();
+    public abstract boolean cambiarEncabezado();
 
 }

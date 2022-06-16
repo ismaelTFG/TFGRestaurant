@@ -8,7 +8,7 @@
 </head>
 <body class="bg-dark d-flex">
     <header>
-        <div class="d-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
+        <div class="d-none d-lg-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
             <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                 <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
                 <p>TFGRestaurant</p>
@@ -117,8 +117,15 @@
     </header>
     <main>
         <div class="container">
+            <div class="d-block d-lg-none row m-0">
+                <nav class="navbar navbar-light bg-light d-flex align-items-center justify-content-center">
+                    <a href="/inicio" class="navbar-brand link-dark text-decoration-none">
+                        <p><img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}"> TFGRestaurant</p>
+                    </a>
+                </nav>
+            </div>
             <div class="row m-3" th:if="${inicio.admi}">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="card-body bg-light rounded m-3">
                         <h3 class="card-title">Usuarios</h3>
                         <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de los usuarios.</p>
@@ -127,7 +134,7 @@
                         <a href="/updateUser" class="btn btn-primary m-1 w-100">Modificar usuario</a>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="card-body bg-light rounded m-3">
                         <h3 class="card-title">Productos</h3>
                         <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de los productos.</p>
@@ -138,39 +145,39 @@
                 </div>
             </div>
             <div class="row m-3">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="card-body bg-light rounded m-3">
                         <h3 class="card-title">Comandas</h3>
                         <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de las comandas</p>
                         <div class="container">
                             <div class="row">
-                                <div class="col-6 pb-2">
+                                <div class="col-12 col-lg-6 pb-2">
                                     <a href="/addComandas" class="btn btn-primary mb-1 mx-1 w-100 h-100">Añadir Comanda</a>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <a href="/updateComandas" class="btn btn-primary mb-1 mx-1 w-100">Añadir productos y modificacion</a>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <a href="/deleteProductosComanda" class="btn btn-primary mb-1 mx-1 w-100">Eliminar productos</a>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <a href="/deleteComandas" class="btn btn-primary mb-1 mx-1 w-100">Eliminar comandas</a>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <a href="/pagarComanda" class="btn btn-primary mx-1 w-100">Ticket de comanda</a>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <a href="/pagadaComanda" class="btn btn-primary mx-1 w-100">Comanda pagada</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="card-body bg-light rounded m-3">
                         <h3 class="card-title">Comandas antiguas</h3>
                         <p class="card-text">En estos botones puedes realizar todo lo necesario para la gestión de las comandas antiguas</p>

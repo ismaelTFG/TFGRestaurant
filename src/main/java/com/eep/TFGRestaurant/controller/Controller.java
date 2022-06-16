@@ -753,6 +753,7 @@ public class Controller {
     public String ticket(@ModelAttribute("comanda") ComandasDTO comandasDTO, Model model){
 
         comandasService.pagar(comandasService.findByMesa(comandasDTO.getMesa()));
+        comandasService.imprimir();
 
         model.addAttribute("lista", comandasService.listEntityToListResponse(comandasService.listAll()));
         model.addAttribute("inicio", user);
