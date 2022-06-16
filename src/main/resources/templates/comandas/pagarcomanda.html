@@ -8,7 +8,7 @@
 </head>
 <body class="bg-dark d-flex">
     <header>
-        <div class="d-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
+        <div class="d-none d-lg-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
             <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                 <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
                 <p>TFGRestaurant</p>
@@ -117,6 +117,13 @@
     </header>
     <main class="w-100">
         <div class="container h-100">
+            <div class="d-block d-lg-none row m-0">
+                <nav class="navbar navbar-light bg-light d-flex align-items-center justify-content-center">
+                    <a href="/inicio" class="navbar-brand link-dark text-decoration-none">
+                        <p><img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}"> TFGRestaurant</p>
+                    </a>
+                </nav>
+            </div>
             <div class="row h-100">
                 <div class="col-8 bg-light m-auto my-5 p-5 d-flex align-item-center justify-content-center rounded">
                     <div class="m-auto">

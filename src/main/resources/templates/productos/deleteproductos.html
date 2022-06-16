@@ -8,7 +8,7 @@
 </head>
 <body class="bg-dark d-flex">
     <header>
-        <div class="d-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
+        <div class="d-none d-lg-flex flex-column flex-shrink p-3 bg-light" style="width: 250px; height: 100vh;">
             <a href="/inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                 <img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}">
                 <p>TFGRestaurant</p>
@@ -117,10 +117,34 @@
     </header>
     <main class="w-100">
         <div class="container">
+            <div class="d-block d-lg-none row m-0">
+                <nav class="navbar navbar-light bg-light d-flex align-items-center justify-content-center">
+                    <a href="/inicio" class="navbar-brand link-dark text-decoration-none">
+                        <p><img src="../../static/img/icono.png" alt="" class="mb-4" width="50" height="50" th:src="@{img/icono.png}"> TFGRestaurant</p>
+                    </a>
+                </nav>
+            </div>
             <div class="row" style="height: 100vh;">
-                <div class="col-8 bg-light m-auto my-5 mx-2 p-5 d-flex align-item-center justify-content-center rounded">
+                <div class="col-11 col-lg-8 bg-light m-auto my-5 mx-2 p-5 d-flex align-item-center justify-content-center rounded">
                     <div class="m-auto">
                         <h1 class="text-center m-2">Eliminar productos</h1>
+                        <div class="d-block d-lg-none">
+                            <form action="#" th:action="@{/busquedaproductodelete}" method="post">
+                                <select class="form-control" id="labelcategoria1" th:name="categoria">
+                                    <option value="Para empezar">Para empezar</option>
+                                    <option value="Ensaladas">Ensaladas</option>
+                                    <option value="Elaborado a la parrilla">Elaborado a la parrilla</option>
+                                    <option value="Bocadillos gourmet">Bocadillos gourmet</option>
+                                    <option value="Para acompañar">Para acompañar</option>
+                                    <option value="Caprichos dulces">Caprichos dulces</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option value="Vinos">Vinos</option>
+                                </select>
+                                <div class="text-center m-2">
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
                         <div class="m-2 alert alert-success" th:if="${correcto}">
                             <h3>Correcto</h3>
                             <p>El Producto se a borrado correctamente.</p>
@@ -163,14 +187,14 @@
                                 </tbody>
                             </table>
                             <div class="text-center m-2" th:if="${inicio.admi}">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boton">Borrar usuarios</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#boton">Borrar producto</button>
                                 <div class="modal fade" id="boton" tapindex="-1" role="dialog" aria-labelledby="boton" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-body">
                                                 <div class="alert alert-warning">
                                                     <h3>Advertencia</h3>
-                                                    <p>estas seguro que quieres eliminar estos usuarios.</p>
+                                                    <p>estas seguro que quieres eliminar estos productos.</p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -188,7 +212,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-3 bg-light m-auto my-5 mx-2 p-5 d-flex align-item-center justify-content-center rounded">
+                <div class="col-3 bg-light m-auto my-5 mx-2 p-5 d-none d-lg-flex align-item-center justify-content-center rounded">
                     <div class="m-auto">
                         <h1 class="text-center m-2">Filtro</h1>
                         <form action="#" th:action="@{/busquedaproductodelete}" method="post">
